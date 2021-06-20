@@ -27,12 +27,12 @@ void serverStartRecording()
   counter = 0;
 
   // we put this all into one stream, because i coulndn't figure out how to join the data otherwise
-  sensorReadings << "{status: 200, data: [";
+  sensorReadings << "{\"status\": 200, \"data\": [";
 
   // set mode back to record
   recording = true;
 
-  server.send(200, "text/plain", "{status: 200}");
+  server.send(200, "text/plain", "{\"status\": 200}");
 }
 
 void serverStopRecording()

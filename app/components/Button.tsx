@@ -1,5 +1,10 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  ViewStyle,
+  StyleProp,
+} from "react-native";
 
 import Colors from "../constants/Colors";
 
@@ -7,14 +12,15 @@ import { Text, View } from "./Themed";
 
 export const Button: React.FC<{
   id?: string;
+  extraStyles?: StyleProp<ViewStyle>;
   handleClick: (id?: string) => void;
-}> = ({ id, children, handleClick }) => {
+}> = ({ id, children, handleClick, extraStyles }) => {
   const pressed = () => {
     handleClick(id);
   };
   return (
     <TouchableOpacity onPress={pressed}>
-      <View style={styles.button}>
+      <View style={[styles.button, extraStyles]}>
         <Text
           style={styles.buttonText}
           lightColor={false ? Colors.light.tint : Colors.dark.tint}
@@ -33,6 +39,7 @@ const styles = StyleSheet.create({
     margin: "10px",
   },
   buttonText: {
-    textAlign: "left",
+    textAlign: "center",
+    // alignItems: "center",
   },
 });

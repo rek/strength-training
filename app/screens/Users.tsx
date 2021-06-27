@@ -2,21 +2,14 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 
 import { Button, View, RefreshView } from "../components";
-import { useUserState } from "../hooks/useUsers";
+import { useCurrentUserState, User, allUsers } from "../hooks/useUsers";
 
 export default function UsersScreen() {
-  const [currentUser, setCurrentUser] = useUserState();
+  const [currentUser, setCurrentUser] = useCurrentUserState();
 
   const refreshAction = () => {
     return Promise.resolve();
   };
-
-  const allUsers = [
-    { id: "adam", display: "adam", weight: 0 },
-    { id: "anette", display: "anette", weight: 0 },
-    { id: "crystal", display: "crystal", weight: 0 },
-    { id: "sam", display: "sam", weight: 0 },
-  ];
 
   const handleClickUser = (id: string) => () => {
     setCurrentUser(id);

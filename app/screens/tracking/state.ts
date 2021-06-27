@@ -5,10 +5,10 @@ export const trainingMachine = createMachine({
   initial: "inactive",
   states: {
     inactive: {
-      on: { NEXT: "running" },
+      on: { NEXT: "running", ERROR: "inactive" },
     },
     running: {
-      on: { NEXT: "hasRun" },
+      on: { NEXT: "hasRun", ERROR: "inactive" },
     },
     hasRun: {
       on: { NEXT: "inactive" },

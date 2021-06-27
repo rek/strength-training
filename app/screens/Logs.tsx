@@ -1,16 +1,25 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { View } from "../components/Themed";
+
+import { View, Text } from "../components/Themed";
 import RefreshView from "../components/RefreshView";
+import { useLocalData } from "../hooks/useLocalData";
 
 export default function LogsScreen() {
   const refreshAction = () => {
     return Promise.resolve();
   };
 
+  const [data] = useLocalData();
+
   return (
     <RefreshView refreshAction={refreshAction}>
-      <View style={styles.container}>test</View>;
+      <View style={styles.container}>
+        {data.length === 0 && <Text>No results to show</Text>}
+        {data.map((item, index) => {
+          return <Text key={`log-${index}`}>User: {item.user}</Text>;
+        })}
+      </View>
     </RefreshView>
   );
 }

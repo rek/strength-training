@@ -1,6 +1,11 @@
 import { atom, useRecoilState } from "recoil";
 
+import { User } from "./useUsers";
 interface LocalData {
+  user: User["id"];
+  weight: number;
+  movement: number;
+  created_at: number;
   data: number[];
 }
 

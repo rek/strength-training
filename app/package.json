@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "dayjs": "^1.10.5",
-    "detect-pullups": "^0.1.2",
+    "detect-pullups": "file:.yalc/detect-pullups",
     "fusioncharts": "^3.17.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",

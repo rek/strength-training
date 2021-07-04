@@ -2,7 +2,9 @@
   "version": "v1",
   "packages": {
     "detect-pullups": {
-      "signature": "b1c23928df8ce41aa93c9ed7d70c2a27"
+      "signature": "b1c23928df8ce41aa93c9ed7d70c2a27",
+      "file": true,
+      "replaced": "^0.1.2"
     }
   }
 }

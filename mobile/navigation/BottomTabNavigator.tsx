@@ -7,6 +7,7 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import {
   BottomTabParamList,
+  LogsParamList,
   TrackingParamList,
   UsersParamList,
 } from "../types";
@@ -14,6 +15,7 @@ import {
 import TrackingScreen from "../screens/tracking/Tracking";
 import UsersScreen from "../screens/Users";
 import { RightHeaderStatus } from "./RightHeaderStatus";
+import LogsScreen from "../screens/Logs";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -49,9 +51,7 @@ export default function BottomTabNavigator() {
         name="Tracking"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bar-chart" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="body" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -59,6 +59,15 @@ export default function BottomTabNavigator() {
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="people" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Logs"
+        component={TabThreeNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="bar-chart" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -101,5 +110,18 @@ function TabTwoNavigator() {
         options={{ headerTitle: "Users" }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const TabThreeStack = createStackNavigator<LogsParamList>();
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator>
+      <TabThreeStack.Screen
+        name="LogsScreen"
+        component={LogsScreen}
+        options={{ headerTitle: "Logs" }}
+      />
+    </TabThreeStack.Navigator>
   );
 }

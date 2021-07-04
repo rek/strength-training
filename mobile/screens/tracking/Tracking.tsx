@@ -29,10 +29,10 @@ export default function TrackingScreen() {
       setErrorMessage("Error, user not set");
       return;
     }
-    if (networkStatus !== NetworkState.hasDevice) {
-      setErrorMessage("Error, device not connected.");
-      return;
-    }
+    // if (networkStatus !== NetworkState.hasDevice) {
+    //   setErrorMessage("Error, device not connected.");
+    //   return;
+    // }
 
     axios
       .get("http://192.168.1.1:80/start")

@@ -20,7 +20,9 @@ export const RefreshView: React.FC<{
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View style={styles.container}>{children}</View>;
+      <>
+        <View style={styles.container}>{children}</View>;
+      </>
     </ScrollView>
   );
 };

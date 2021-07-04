@@ -10,8 +10,12 @@ const orange = "#ffa726";
 const green = "#5dbb63";
 const blue = "#3944bc";
 
+const red = "#fc5060";
+const red1 = "#fc5060";
+
 export default {
   light: {
+    error: red,
     hasNet: green,
     hasDevice: blue,
     hasUnsaved: orange,
@@ -22,6 +26,7 @@ export default {
     tabIconSelected: darkGrey,
   },
   dark: {
+    error: red,
     hasNet: green,
     hasDevice: blue,
     hasUnsaved: orange,

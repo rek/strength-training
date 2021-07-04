@@ -8,6 +8,8 @@ public:
   void printEvent(sensors_event_t *event);
   sensors_event_t *getOReading();
 
+  bool isCalibrated;
   int getZReading();
   float getHeightReading();
+  void doCalibration();
 };

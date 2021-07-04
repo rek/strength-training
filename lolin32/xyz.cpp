@@ -15,6 +15,39 @@ uint16_t BNO055_SAMPLERATE_DELAY_MS = 100;
 //                                   id, address
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x29);
 
+void showCalibrationValues(){
+    adafruit_bno055_offsets_t calibrationData;
+    bno.getSensorOffsets(calibrationData);
+//    Serial.println("//----Add this code to your setup funciton, after bno is initialized----");
+    Serial.println("adafruit_bno055_offsets_t calibrationData;");
+    Serial.print("calibrationData.accel_offset_x = "); Serial.print(calibrationData.accel_offset_x); Serial.println(";");
+    Serial.print("calibrationData.accel_offset_y = "); Serial.print(calibrationData.accel_offset_y); Serial.println(";");
+    Serial.print("calibrationData.accel_offset_z = "); Serial.print(calibrationData.accel_offset_z); Serial.println(";");
+    Serial.print("calibrationData.accel_radius = "); Serial.print(calibrationData.accel_radius); Serial.println(";");
+//    Serial.print("calibrationData.gyro_offset_x = "); Serial.print(calibrationData.gyro_offset_x); Serial.println(";");
+//    Serial.print("calibrationData.gyro_offset_y = "); Serial.print(calibrationData.gyro_offset_y); Serial.println(";");
+//    Serial.print("calibrationData.gyro_offset_z = "); Serial.print(calibrationData.gyro_offset_z); Serial.println(";");
+//    Serial.print("calibrationData.mag_offset_z = "); Serial.print(calibrationData.accel_offset_z); Serial.println(";");
+//    Serial.print("calibrationData.mag_offset_x = "); Serial.print(calibrationData.gyro_offset_x); Serial.println(";");
+//    Serial.print("calibrationData.mag_offset_y = "); Serial.print(calibrationData.gyro_offset_y); Serial.println(";");
+//    Serial.print("calibrationData.mag_radius = "); Serial.print(calibrationData.mag_radius); Serial.println(";");
+    Serial.println("bno.setSensorOffsets(calibrationData);"); 
+      // Stop here, let user copy and paste the code in peace. 
+//    while(1){
+    //calibrationData.accel_offset_x = 0;
+    //calibrationData.accel_offset_y = -8988;
+    //calibrationData.accel_offset_z = 16379;
+    //calibrationData.gyro_offset_x = 16379;
+    //calibrationData.gyro_offset_y = 6640;
+    //calibrationData.gyro_offset_z = 16380;
+    //calibrationData.mag_offset_z = 16379;
+    //calibrationData.mag_offset_x = 16379;
+    //calibrationData.mag_offset_y = 6640;
+    //calibrationData.accel_radius = 2;
+    //calibrationData.mag_radius = 0;
+    //    }
+}
+
 void XYZ::setup()
 {
   Serial.println("");
@@ -33,6 +66,25 @@ void XYZ::setup()
   }
 }
 
+void XYZ::doCalibration() {
+  uint8_t system = 0;
+  uint8_t gyro = 0;
+  uint8_t accel = 0;
+  uint8_t mag = 0;
+
+  bno.getCalibration(&system, &gyro, &accel, &mag);  
+
+  while (accel != 3 && system != 3) {
+//  while (mag != 3 && gyro != 3 && accel != 3 && system != 3) {
+    bno.getCalibration(&system, &gyro, &accel, &mag);
+    showCalibrationValues();
+    Serial.println(""); 
+  } 
+  
+  Serial.println("Calibration complete!"); 
+  isCalibrated = true;
+}
+
 sensors_event_t *XYZ::getOReading()
 {
   sensors_event_t orientationData;
@@ -44,6 +96,13 @@ float XYZ::getHeightReading()
 {
   sensors_event_t linearAccelData;
   bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
+
+  Serial.print(linearAccelData.acceleration.x);
+  Serial.print(" ");
+  Serial.print(linearAccelData.acceleration.y);
+  Serial.print(" ");
+  Serial.print(linearAccelData.acceleration.z);
+  Serial.print(" ");
   return linearAccelData.acceleration.y;
 }
 
@@ -59,12 +118,7 @@ int XYZ::getZReading()
   bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
   // printEvent(&orientationData);
 
-  uint8_t system = 0;
-  uint8_t gyro = 0;
-  uint8_t accel = 0;
-  uint8_t mag = 0;
 
-  bno.getCalibration(&system, &gyro, &accel, &mag);
 
   delay(BNO055_SAMPLERATE_DELAY_MS);
 

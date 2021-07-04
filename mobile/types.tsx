@@ -6,6 +6,7 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   Tracking: undefined;
   Users: undefined;
+  Logs: undefined;
 };
 
 export type TrackingParamList = {
@@ -14,6 +15,10 @@ export type TrackingParamList = {
 
 export type UsersParamList = {
   UsersScreen: undefined;
+};
+
+export type LogsParamList = {
+  LogsScreen: undefined;
 };
 
 export type IDToken = { idToken: string };

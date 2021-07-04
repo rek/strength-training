@@ -1,12 +1,11 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 
 import { Text, View } from "../components/Themed";
 import Colors from "../constants/Colors";
 import { useLocalData } from "../hooks/useLocalData";
+import { NetworkState, useNetworkStatus } from "../hooks/useNetworkStatus";
 
-type State = "hasInternet" | "hasDevice" | "hasNothing";
 enum UnsavedState {
   "hasUnsaved" = "hasUnsaved",
   "hasNothing" = "hasNothing",
@@ -15,28 +14,11 @@ enum UnsavedState {
 export const RightHeaderStatus: React.FC<{
   tintColor?: string;
 }> = () => {
-  const [status, setStatus] = React.useState<State>("hasNothing");
   const [unsavedStatus, setUnsavedStatus] = React.useState<UnsavedState>(
     UnsavedState.hasNothing
   );
   const [localData] = useLocalData();
-
-  const processState = (state: NetInfoState) => {
-    if (state.isConnected) {
-      console.log("Connection state", state);
-      if ("ipAddress" in state.details) {
-        if (state.details.ipAddress === "192.168.1.1") {
-          setStatus("hasDevice");
-        } else {
-          setStatus("hasInternet");
-        }
-      } else {
-        setStatus("hasInternet");
-      }
-    } else {
-      setStatus("hasNothing");
-    }
-  };
+  const [networkStatus] = useNetworkStatus();
 
   React.useEffect(() => {
     console.log("localData", localData);
@@ -47,18 +29,12 @@ export const RightHeaderStatus: React.FC<{
     }
   }, [localData]);
 
-  React.useEffect(() => {
-    NetInfo.fetch().then(processState);
-    const unsubscribe = NetInfo.addEventListener(processState);
-    return () => unsubscribe();
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.dataContainer}>
         <Text style={styles[unsavedStatus]} />
       </View>
-      <Text style={styles[status]} />
+      <Text style={styles[networkStatus]} />
     </View>
   );
 };
@@ -78,13 +54,13 @@ const styles = StyleSheet.create({
     height: size,
     borderRadius: size / 2,
   },
-  hasInternet: {
+  [NetworkState.hasInternet]: {
     backgroundColor: Colors.light.hasNet,
     width: size,
     height: size,
     borderRadius: size / 2,
   },
-  hasDevice: {
+  [NetworkState.hasDevice]: {
     backgroundColor: Colors.light.hasDevice,
     width: size,
     height: size,

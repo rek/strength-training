@@ -11,7 +11,8 @@
  * upload speed: 460800
  */
 
-#define BUFFER_MAX 200
+#define BUFFER_MAX 2000
+#define READING_DELAY 10
 XYZ xyz;
 int counter = 0;
 WebServer server(80);
@@ -49,7 +50,10 @@ void serverStopRecording()
 
   serverLastRecording();
 }
-
+void serverIsCalibrated()
+{
+  server.send(200, "text/plain", xyz.isCalibrated ? "true" : "false");
+}
 void serverLastRecording()
 {
   Serial.println("Generate output");
@@ -79,6 +83,7 @@ void setup(void)
   server.on("/start", serverStartRecording);
   server.on("/stop", serverStopRecording);
   server.on("/get", serverLastRecording);
+  server.on("/isCalibrated", serverIsCalibrated);
   server.begin();
   server.enableCORS(true);
 
@@ -90,6 +95,11 @@ void setup(void)
 void loop(void)
 {
   server.handleClient();
+
+  if (!xyz.isCalibrated) {
+    xyz.doCalibration();
+    return;  
+  }
 
   if (recording)
   {
@@ -106,5 +116,5 @@ void loop(void)
 
   // xyz.printEvent(xyz.getOReading());
 
-  delay(100);
+  delay(READING_DELAY);
 }

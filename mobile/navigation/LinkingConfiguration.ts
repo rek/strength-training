@@ -16,6 +16,11 @@ export default {
               UsersScreen: "Users",
             },
           },
+          Logs: {
+            screens: {
+              LogsScreen: "LogsScreen",
+            },
+          },
         },
       },
       NotFound: "*",

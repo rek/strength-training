@@ -22,7 +22,7 @@ export const Graph: React.FC = () => {
   let initial = +new Date();
   let increment = 0;
   const processData = data.map((item) => {
-    increment += 10000;
+    increment += 100000;
     const time = initial + increment;
     return [displayDate(time), item];
     // return [new Date(time), item];

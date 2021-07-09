@@ -13,9 +13,8 @@ import {
 } from "../types";
 
 import TrackingScreen from "../screens/tracking/Tracking";
-import UsersScreen from "../screens/Users";
 import { RightHeaderStatus } from "./RightHeaderStatus";
-import LogsScreen from "../screens/Logs";
+import { LogsScreen, Settings, UsersScreen } from "../screens";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -116,7 +115,12 @@ function TabTwoNavigator() {
 const TabThreeStack = createStackNavigator<LogsParamList>();
 function TabThreeNavigator() {
   return (
-    <TabThreeStack.Navigator>
+    <TabThreeStack.Navigator initialRouteName="LogsScreen">
+      <TabThreeStack.Screen
+        name="SettingsScreen"
+        options={{ title: "Settings" }}
+        component={Settings}
+      />
       <TabThreeStack.Screen
         name="LogsScreen"
         component={LogsScreen}

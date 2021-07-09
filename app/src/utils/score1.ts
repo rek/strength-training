@@ -1,6 +1,7 @@
 import { Log } from "../types/types";
+import { getRepsFromLog } from "./getRepsFromLog";
 
-export const generateScore = (log: Log) => {
+export const generateScore = async (log: Log) => {
   // =FIXED((B14*D14/E14*M5)+(B14*C14)-(A14/B14*C14/M7), 0)
 
   /*
@@ -15,6 +16,12 @@ export const generateScore = (log: Log) => {
   Score            =  Base + Volume - Speed Penalty
 
   */
+
+  const result = await getRepsFromLog(log);
+
+  console.log("result", result);
+
+  result.map((rep) => {});
 
   return {
     total: 10,

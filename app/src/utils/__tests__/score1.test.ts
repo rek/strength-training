@@ -1,7 +1,16 @@
-import one from '../__fixtures__/1'
+import one from "../__fixtures__/1";
 
-import {}
+import { generateScore } from "../score1";
 
 test("generates score", () => {
-  expect(true).toEqual(true);
+  expect(
+    generateScore({
+      rawData: one,
+      bodyWeight: 100,
+      timestamp: 123,
+      durationMillis: 1000,
+    })
+  ).toEqual({
+    total: 100,
+  });
 });

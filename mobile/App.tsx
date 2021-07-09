@@ -9,7 +9,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
-import { useFirebase } from "./hooks/useFirebase";
+import { AuthProvider } from "./database/AuthProvider";
 
 const queryClient = new QueryClient();
 
@@ -38,13 +38,3 @@ export default function App() {
     </QueryClientProvider>
   );
 }
-
-const AuthProvider: React.FC = ({ children }) => {
-  const { isLoading } = useFirebase();
-
-  if (isLoading) {
-    return null;
-  }
-
-  return <>{children}</>;
-};

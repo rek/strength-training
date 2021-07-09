@@ -5,16 +5,15 @@ export default ({ config }) => {
       "package": "com.rek.strengthtraining"
     },
     "extra": {
-      "user":"rekarnar+test@gmail.com",
-      "pass":"rekarnar+test@gmail.com",
-      "apiKey":"AIzaSyAuEqWHDa20NzsQutesSCp1ucvc7k2ud6Y",
-      "authDomain":"pullups-4eb8a.firebaseapp.com",
-      "projectId":"pullups-4eb8a",
-      "storageBucket":"pullups-4eb8a.appspot.com",
-      "messagingSenderId":"386867108595",
-      "appId": "1:386867108595:web:d71bb3d993ed9dbc1d3586",
-      "measurementId":"G-ZKSJGD9GBQ",
-      "databaseURL":"https://pullups-4eb8a-default-rtdb.europe-west1.firebasedatabase.app",
+      "user":"rekarnar+sts+mobile@gmail.com",
+      "pass":"rekarnar+sts+mobile@gmail.com",
+      "apiKey": "AIzaSyCcJGkTykWz6mCuUZ91utmdu1yhEenLJd4",
+      "authDomain": "strength-training-system.firebaseapp.com",
+      "projectId": "strength-training-system",
+      "storageBucket": "strength-training-system.appspot.com",
+      "messagingSenderId": "24790049657",
+      "appId": "1:24790049657:web:827698efcab70c4a0505a8",
+      "databaseURL":"https://pullups-4eb8a-default-rtdb.europe-west1.firebasedatabase.app"
     },
 
   };

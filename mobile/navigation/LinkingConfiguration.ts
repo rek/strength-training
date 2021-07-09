@@ -6,6 +6,7 @@ export default {
     screens: {
       Root: {
         screens: {
+          SettingsScreen: "SettingsScreen",
           Tracking: {
             screens: {
               TrackingScreen: "Tracking",

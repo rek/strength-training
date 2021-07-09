@@ -1,16 +1,13 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import React from "react";
 
-import { Graph } from "./pages/Graph";
+import { Routes, Sidebar } from "./pages";
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" component={Graph} />
-        </Switch>
-      </BrowserRouter>
+      <Sidebar />
+      <Routes />
     </div>
   );
 }

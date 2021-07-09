@@ -19,6 +19,7 @@ export type UsersParamList = {
 
 export type LogsParamList = {
   LogsScreen: undefined;
+  SettingsScreen: undefined;
 };
 
 export type IDToken = { idToken: string };

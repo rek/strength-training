@@ -3,8 +3,9 @@ import { StyleSheet } from "react-native";
 
 import { Button, View, RefreshView } from "../components";
 import { useCurrentUserState, User, allUsers } from "../hooks/useUsers";
+import { useUsers } from "../hooks/useFirebaseUsers";
 
-export default function UsersScreen() {
+export const UsersScreen = () => {
   const [currentUser, setCurrentUser] = useCurrentUserState();
 
   const refreshAction = () => {
@@ -14,6 +15,8 @@ export default function UsersScreen() {
   const handleClickUser = (id: string) => () => {
     setCurrentUser(id);
   };
+
+  // const users = useUsers({ idToken: token });
 
   return (
     // <RefreshView refreshAction={refreshAction}>
@@ -32,7 +35,7 @@ export default function UsersScreen() {
     </View>
     // </RefreshView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

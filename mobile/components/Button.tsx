@@ -12,9 +12,10 @@ import { Text, View } from "./Themed";
 
 export const Button: React.FC<{
   id?: string;
+  title?: string;
   extraStyles?: StyleProp<ViewStyle>;
   handleClick: (id?: string) => void;
-}> = ({ id, children, handleClick, extraStyles }) => {
+}> = ({ id, title, children, handleClick, extraStyles }) => {
   const pressed = () => {
     handleClick(id);
   };
@@ -25,6 +26,7 @@ export const Button: React.FC<{
           style={styles.buttonText}
           lightColor={false ? Colors.light.tint : Colors.dark.tint}
         >
+          {title}
           {children}
         </Text>
       </View>

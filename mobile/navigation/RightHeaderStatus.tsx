@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
-import Colors from "../constants/Colors";
+import Colors, { CurrentTheme } from "../constants/Colors";
 import { useLocalData } from "../hooks/useLocalData";
 import { NetworkState, useNetworkStatus } from "../hooks/useNetworkStatus";
 
@@ -49,25 +49,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   [UnsavedState.hasUnsaved]: {
-    backgroundColor: Colors.light.hasUnsaved,
+    backgroundColor: Colors[CurrentTheme].hasUnsaved,
     width: size,
     height: size,
     borderRadius: size / 2,
   },
   [NetworkState.hasInternet]: {
-    backgroundColor: Colors.light.hasNet,
+    backgroundColor: Colors[CurrentTheme].hasNet,
     width: size,
     height: size,
     borderRadius: size / 2,
   },
   [NetworkState.hasDevice]: {
-    backgroundColor: Colors.light.hasDevice,
+    backgroundColor: Colors[CurrentTheme].hasDevice,
     width: size,
     height: size,
     borderRadius: size / 2,
   },
   [UnsavedState.hasNothing]: {
-    backgroundColor: Colors.light.text,
+    backgroundColor: Colors[CurrentTheme].text,
     width: size,
     height: size,
     borderRadius: size / 2,

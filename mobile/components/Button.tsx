@@ -10,15 +10,23 @@ import Colors from "../constants/Colors";
 
 import { Text, View } from "./Themed";
 
-export const Button: React.FC<{
+export interface Props {
   id?: string;
   title?: string;
   extraStyles?: StyleProp<ViewStyle>;
   handleClick: (id?: string) => void;
-}> = ({ id, title, children, handleClick, extraStyles }) => {
+}
+export const Button: React.FC<Props> = ({
+  id,
+  title,
+  children,
+  handleClick,
+  extraStyles,
+}) => {
   const pressed = () => {
     handleClick(id);
   };
+
   return (
     <TouchableOpacity onPress={pressed}>
       <View style={[styles.button, extraStyles]}>
@@ -34,10 +42,20 @@ export const Button: React.FC<{
   );
 };
 
+export const ButtonNormal: React.FC<Props> = (props) => {
+  return <Button {...props} extraStyles={styles.normal} />;
+};
+
+export const ButtonSmall: React.FC<Props> = (props) => {
+  return <Button {...props} />;
+};
+
 const styles = StyleSheet.create({
-  button: {
+  normal: {
     width: 300,
     padding: "30px",
+  },
+  button: {
     margin: "10px",
   },
   buttonText: {

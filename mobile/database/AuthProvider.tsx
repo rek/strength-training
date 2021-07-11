@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useFirebase } from "../hooks/useFirebase";
+import { useFirebase } from "./useFirebase";
 
 export const AuthProvider: React.FC = ({ children }) => {
   const { isLoading } = useFirebase();

@@ -5,16 +5,10 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import {
-  BottomTabParamList,
-  LogsParamList,
-  TrackingParamList,
-  UsersParamList,
-} from "../types";
+import { BottomTabParamList, LogsParamList, UsersParamList } from "../types";
 
-import TrackingScreen from "../screens/tracking/Tracking";
-import { RightHeaderStatus } from "./RightHeaderStatus";
 import { LogsScreen, Settings, UsersScreen } from "../screens";
+import { TrackingNavigator } from "./tracking/TrackingStack";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -23,7 +17,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Users"
+      initialRouteName="Tracking"
       tabBarOptions={{
         activeTintColor: Colors[colorScheme].tabIconSelected,
         inactiveTintColor: Colors[colorScheme].tabIconDefault,
@@ -48,9 +42,11 @@ export default function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="Tracking"
-        component={TabOneNavigator}
+        component={TrackingNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="body" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="fitness" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -80,22 +76,6 @@ function TabBarIcon(props: {
   color: string;
 }) {
   return <Ionicons size={30} style={{ marginBottom: -4 }} {...props} />;
-}
-
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TrackingParamList>();
-
-function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TrackingScreen"
-        component={TrackingScreen}
-        options={{ headerTitle: "Tracking", headerRight: RightHeaderStatus }}
-      />
-    </TabOneStack.Navigator>
-  );
 }
 
 const TabTwoStack = createStackNavigator<UsersParamList>();

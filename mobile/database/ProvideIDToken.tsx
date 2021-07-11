@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useFirebase } from "../hooks/useFirebase";
+import { useFirebase } from "./useFirebase";
 
 import { Loading } from "../components/Loading";
 import { View, Text } from "../components/Themed";

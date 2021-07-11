@@ -2,8 +2,8 @@ import React from "react";
 import { atom, useRecoilState } from "recoil";
 import { Picker } from "@react-native-picker/picker";
 
-import { Text } from "../../components/Themed";
-import { styles } from "./elements";
+import { Text } from "../../../components/Themed";
+import { styles } from "../../elements";
 
 const selectedExerciseState = atom({
   key: "selectExercise", // unique ID (with respect to other atoms/selectors)

@@ -11,6 +11,8 @@ export type BottomTabParamList = {
 
 export type TrackingParamList = {
   TrackingScreen: undefined;
+  CreateActivityScreen: undefined;
+  StartActivityScreen: { id: string };
 };
 
 export type UsersParamList = {

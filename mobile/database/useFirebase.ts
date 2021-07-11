@@ -68,7 +68,7 @@ export class FirebaseClient {
     throw result.createError();
   }
 
-  public static async writeData<T, K>({
+  public static async updatData<T, K>({
     idToken,
     key,
     value,
@@ -83,6 +83,28 @@ export class FirebaseClient {
     // userData?documentId=${key}
     const result: ApiResponse = await client.patch(
       `${key}?updateMask.fieldPaths=active&currentDocument.exists=true&key=${Constants?.manifest?.extra?.apiKey}`,
+      value
+    );
+
+    if (result.success) {
+      return true;
+    } else {
+      throw result.createError();
+    }
+  }
+
+  public static async writeData<T, K>({
+    idToken,
+    key,
+    value,
+  }: {
+    idToken: string;
+    key: T;
+    value: K;
+  }): Promise<boolean | Error> {
+    const client: HttpClient = FirebaseClient.getFirestoreClient(idToken);
+    const result: ApiResponse = await client.post(
+      `${key}?key=${Constants?.manifest?.extra?.apiKey}`,
       value
     );
 

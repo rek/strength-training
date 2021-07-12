@@ -7,7 +7,7 @@ import { View, Text } from "../components/Themed";
 import { Button } from "../components";
 import RefreshView from "../components/RefreshView";
 import { useLocalData } from "../hooks/useLocalData";
-import { LogsParamList } from "../types";
+import { LogsParamList } from "../navigation/types";
 
 type Props = StackScreenProps<LogsParamList, "LogsScreen">;
 export const LogsScreen: React.FC<Props> = ({ navigation }) => {
@@ -27,41 +27,40 @@ export const LogsScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <RefreshView refreshAction={refreshAction}>
       <View style={styles.container}>
-        {data.length === 0 && <Text>No results to show</Text>}
+        <View style={styles.title}>
+          {data.length === 0 && <Text>No results to show</Text>}
+        </View>
+        <View style={styles.list}>
+          {data.map((item, index) => {
+            return (
+              <Text key={`log-${index}`}>
+                User: {item.user} {daysjs("created_at").format("lll")}
+              </Text>
+            );
+          })}
+        </View>
+        <Button
+          title="Go to Settings"
+          handleClick={() => navigation.navigate("SettingsScreen")}
+        />
       </View>
-      <View style={styles.list}>
-        {data.map((item, index) => {
-          return (
-            <Text key={`log-${index}`}>
-              User: {item.user} {daysjs("created_at").format("lll")}
-            </Text>
-          );
-        })}
-      </View>
-      <Button
-        title="Go to Settings"
-        handleClick={() => navigation.navigate("SettingsScreen")}
-      />
     </RefreshView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  title: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 7,
+  },
+  container: {
+    width: "100%",
   },
   list: {
     flex: 1,
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    paddingTop: 7,
-  },
-  title: {
-    fontSize: 14,
-    // fontWeight: "bold",
   },
   separator: {
     marginBottom: 20,

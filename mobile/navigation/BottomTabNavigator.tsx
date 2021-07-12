@@ -5,10 +5,11 @@ import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import { BottomTabParamList, LogsParamList, UsersParamList } from "../types";
+import { BottomTabParamList, UsersParamList } from "./types";
 
-import { LogsScreen, Settings, UsersScreen } from "../screens";
-import { TrackingNavigator } from "./tracking/TrackingStack";
+import { UsersScreen } from "../screens";
+import { TrackingIcon, TrackingNavigator } from "./tracking/TrackingStack";
+import { LogsIcon, LogsNavigator } from "./logs/LogsStack";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -44,9 +45,7 @@ export default function BottomTabNavigator() {
         name="Tracking"
         component={TrackingNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="fitness" color={color} />
-          ),
+          tabBarIcon: TrackingIcon,
         }}
       />
       <BottomTab.Screen
@@ -58,11 +57,9 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Logs"
-        component={TabThreeNavigator}
+        component={LogsNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bar-chart" color={color} />
-          ),
+          tabBarIcon: LogsIcon,
         }}
       />
     </BottomTab.Navigator>
@@ -71,12 +68,12 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: {
+export const TabBarIcon = (props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
-}) {
+}) => {
   return <Ionicons size={30} style={{ marginBottom: -4 }} {...props} />;
-}
+};
 
 const TabTwoStack = createStackNavigator<UsersParamList>();
 
@@ -89,23 +86,5 @@ function TabTwoNavigator() {
         options={{ headerTitle: "Users" }}
       />
     </TabTwoStack.Navigator>
-  );
-}
-
-const TabThreeStack = createStackNavigator<LogsParamList>();
-function TabThreeNavigator() {
-  return (
-    <TabThreeStack.Navigator initialRouteName="LogsScreen">
-      <TabThreeStack.Screen
-        name="SettingsScreen"
-        options={{ title: "Settings" }}
-        component={Settings}
-      />
-      <TabThreeStack.Screen
-        name="LogsScreen"
-        component={LogsScreen}
-        options={{ headerTitle: "Logs" }}
-      />
-    </TabThreeStack.Navigator>
   );
 }

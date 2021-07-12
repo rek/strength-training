@@ -1,3 +1,4 @@
+const black = "#000";
 const tintColorLight = "#eee";
 const tintColorDark = "#fff";
 
@@ -33,7 +34,8 @@ export default {
     hasUnsaved: orange,
     text: "#fff",
     border: darkGrey,
-    background: "#000",
+    background: black,
+    header: black,
     tint: tintColorDark,
     tabIconDefault: lightGrey,
     tabIconSelected: tintColorDark,
@@ -46,6 +48,7 @@ export default {
     hasUnsaved: orange,
     text: lightGrey,
     background: darkGrey,
+    header: black,
     border: lightGrey,
     tint: darkGrey,
     tabIconDefault: lightGrey,

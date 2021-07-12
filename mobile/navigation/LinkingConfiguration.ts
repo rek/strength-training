@@ -10,6 +10,8 @@ export default {
           Tracking: {
             screens: {
               TrackingScreen: "Tracking",
+              StartActivityScreen: "StartActivityScreen",
+              CreateActivityScreen: "CreateActivityScreen",
             },
           },
           Users: {

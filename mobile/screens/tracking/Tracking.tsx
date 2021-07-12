@@ -5,7 +5,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { AddButtonSmall, View } from "../../components";
 
 import { ListScreen, EmptyScreen } from "./list";
-import { TrackingParamList } from "../../types";
+import { TrackingParamList } from "../../navigation/types";
 import { useFirebase } from "../../database/useFirebase";
 import {
   ActivityHydrayed,
@@ -15,8 +15,8 @@ import { Loading } from "../../components";
 
 type Props = StackScreenProps<TrackingParamList, "TrackingScreen">;
 export const TrackingScreen: React.FC<Props> = ({ navigation }) => {
-  const { data: token, isLoading } = useFirebase();
-  const activities = useActivitiesHydrated(token || "");
+  const { data: idToken, isLoading } = useFirebase();
+  const activities = useActivitiesHydrated(idToken);
 
   const handleClick = (activity: ActivityHydrayed) => {
     console.log("activity", activity);
@@ -53,13 +53,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   middleContent: {
-    display: "flex",
     paddingTop: 100,
     alignItems: "center",
     justifyContent: "center",
   },
   topBar: {
-    display: "flex",
     flexFlow: "row wrap",
     justifyContent: "flex-end",
   },

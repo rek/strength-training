@@ -3,8 +3,8 @@ import { atom, useRecoilState } from "recoil";
 import { User } from "./useUsers";
 export interface LocalData {
   user: User["id"];
-  weight: number;
-  movement: number;
+  weight: string;
+  movement: string;
   created_at: number;
   data: number[];
   is_synced?: boolean;

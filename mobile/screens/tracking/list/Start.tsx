@@ -1,133 +1,120 @@
 import React from "react";
-import axios from "axios";
 import { StyleSheet } from "react-native";
 import { useMachine } from "@xstate/react";
+import { StackScreenProps } from "@react-navigation/stack";
+import { useKeepAwake } from "expo-keep-awake";
 
-import { Text, View } from "../../../components/Themed";
-import { Button } from "../../../components/Button";
+import { ErrorDisplay } from "../../../components/Error";
+import { ButtonNormal, Text, View } from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 import { useLocalData } from "../../../hooks/useLocalData";
 import {
   NetworkState,
   useNetworkStatus,
 } from "../../../hooks/useNetworkStatus";
+import { useActivityHydrated } from "../../../hooks/useActivitiesHydrated";
+import { typography } from "../../../styles/typography";
+import { useFirebase } from "../../../database/useFirebase";
+import { TrackingParamList } from "../../../navigation/types";
+import { start, stop } from "../../../models/device";
 
 import { trainingMachine } from "./startState";
-import { useCurrentUserState } from "../../../hooks/useUsers";
+import { ChartData, LineChart } from "../../../components/LineChartChartKit";
 
-interface Props {
-  id: string;
-}
-export const StartActivityScreen: React.FC<Props> = ({ id }) => {
-  const [userId] = useCurrentUserState();
+type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
+export const StartActivityScreen: React.FC<Props> = ({ route }) => {
+  const { data: idToken } = useFirebase();
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
   const [networkStatus] = useNetworkStatus();
   const [currentState, send] = useMachine(trainingMachine);
   const [localData, setLocalData] = useLocalData();
+  useKeepAwake();
+
+  // const { data } = useActivity({ idToken, id: route.params.id });
+  const data = useActivityHydrated({
+    idToken: idToken || "",
+    id: route.params.id,
+  });
+
+  if (data.length !== 1) {
+    return <ErrorDisplay error="Error fetching data" />;
+  }
+
+  const currentActivity = data[0];
+  console.log("currentActivity", currentActivity);
+  console.log("localData", localData);
+  const title = currentActivity.movementName.toLocaleUpperCase();
 
   // get from state
-  const selectedExercise = 1;
-  const selectedWeight = 2;
+  const selectedExercise = currentActivity.movement;
+  const selectedWeight = currentActivity.weight;
+
+  const chartData: ChartData = [
+    { x: 1, y: 1 },
+    { x: 2, y: 2 },
+    { x: 3, y: 3 },
+  ];
 
   const handleClick = () => {
-    if (!userId) {
-      setErrorMessage("Error, user not set");
-      return;
-    }
     // if (networkStatus !== NetworkState.hasDevice) {
     //   setErrorMessage("Error, device not connected.");
     //   return;
     // }
-
-    axios
-      .get("http://192.168.1.1:80/start")
-      .then((response) => {
-        console.log("Start response", response);
-      })
-      .catch((response) => {
-        console.log("Error response from start", response);
-      });
-
+    start();
     send("NEXT");
     setErrorMessage("");
   };
 
-  const handleClickStop = () => {
-    if (!userId) {
-      setErrorMessage("Error, user not set");
+  const handleClickStop = async () => {
+    const result = await stop();
+    if (result.error) {
+      setErrorMessage(result.errorMessage);
       send("ERROR");
-      return;
+    } else {
+      setLocalData([
+        ...localData,
+        {
+          user: currentActivity.user,
+          data: result.data,
+          movement: selectedExercise,
+          weight: selectedWeight,
+          created_at: +new Date(),
+        },
+      ]);
+      send("NEXT");
+      setErrorMessage("");
     }
-    axios
-      .get("http://192.168.1.1:80/stop")
-      .then((response) => {
-        console.log("Stop response", response);
-        try {
-          // have some trouble making this nice in the hardware
-          // so easier to fix the hack here:
-          const cleanData = response.data.replace(",]}", "]}");
-          const result = JSON.parse(cleanData);
-          if (result) {
-            console.log("data", result);
-            setLocalData([
-              ...localData,
-              {
-                user: userId,
-                data: result.data,
-                movement: selectedExercise,
-                weight: selectedWeight,
-                created_at: +new Date(),
-              },
-            ]);
-
-            setErrorMessage("");
-            send("NEXT");
-          } else {
-            setErrorMessage("Error: No result");
-            send("ERROR");
-          }
-        } catch (e) {
-          setErrorMessage(`Error: ${e}`);
-          send("ERROR");
-        }
-      })
-      .catch((response) => {
-        setErrorMessage(`Error response: ${response}`);
-        send("ERROR");
-      });
   };
 
   const handleClickReset = () => {
     send("NEXT");
   };
 
-  // const handleClickResult = () => {
-  //   axios
-  //     .get("http://192.168.1.1:80/get")
-  //     .then((response) => {
-  //       console.log("Get response", response);
-  //     })
-  //     .catch((response) => {
-  //       console.log("Error response", response);
-  //     });
-  // };
-
   return (
     <View style={styles.container}>
-      <View style={styles.errorBox}>
-        <Text style={styles.errorBanner}>{errorMessage}</Text>
+      <View style={styles.titleContainer}>
+        <View style={styles.errorBox}>
+          <Text style={styles.errorBanner}>{errorMessage}</Text>
+        </View>
+        <Text style={titleStyle}>{title}</Text>
       </View>
-      <View style={styles.mainBox}>
+      <View style={styles.mainContainer}>
+        {chartData ? (
+          <LineChart data={chartData} dotSize={2} disableXAxis />
+        ) : (
+          <Text>Results will appear here when available</Text>
+        )}
+      </View>
+      <View style={styles.footerContainer}>
         {currentState.matches("inactive") && (
-          <Button handleClick={handleClick}>Start</Button>
+          <ButtonNormal handleClick={handleClick}>Start</ButtonNormal>
         )}
         {currentState.matches("running") && (
-          <Button handleClick={handleClickStop}>Stop</Button>
+          <ButtonNormal handleClick={handleClickStop}>Stop</ButtonNormal>
         )}
-        {/* <Button handleClick={handleClickResult}>Last result</Button> */}
         {currentState.matches("hasRun") && (
           <>
-            <Button handleClick={handleClickReset}>Reset</Button>
+            <ButtonNormal handleClick={handleClickReset}>Reset</ButtonNormal>
             <Text>Log recorded and added!</Text>
             {/* <View>
             {data.length > 0 && (
@@ -149,15 +136,24 @@ const styles = StyleSheet.create({
   errorBanner: {
     color: Colors[CurrentTheme].error,
   },
+  title: {
+    borderBottomWidth: 1,
+  },
   errorBox: {
     backgroundColor: Colors[CurrentTheme].background,
-    marginBottom: 100,
     border: 2,
     padding: 20,
     borderColor: "#fe5523",
   },
-  mainBox: {
-    width: "80%",
+  titleContainer: {
+    flex: 1,
+  },
+  footerContainer: {
+    flex: 1,
+  },
+  mainContainer: {
+    flex: 4,
+    width: "100%",
     backgroundColor: Colors[CurrentTheme].background,
     marginBottom: 10,
   },
@@ -168,3 +164,4 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 });
+const titleStyle = StyleSheet.flatten([typography.large, styles.title]);

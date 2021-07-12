@@ -6,7 +6,7 @@ import {
   StyleProp,
 } from "react-native";
 
-import Colors from "../constants/Colors";
+import Colors, { CurrentTheme } from "../constants/Colors";
 
 import { Text, View } from "./Themed";
 
@@ -29,7 +29,7 @@ export const Button: React.FC<Props> = ({
 
   return (
     <TouchableOpacity onPress={pressed}>
-      <View style={[styles.button, extraStyles]}>
+      <View style={[styles.buttonView, extraStyles]}>
         <Text
           style={styles.buttonText}
           lightColor={false ? Colors.light.tint : Colors.dark.tint}
@@ -54,8 +54,11 @@ const styles = StyleSheet.create({
   normal: {
     width: 300,
     padding: "30px",
+    borderWidth: 1,
+    borderColor: Colors[CurrentTheme].border,
+    borderRadius: 48,
   },
-  button: {
+  buttonView: {
     margin: "10px",
   },
   buttonText: {

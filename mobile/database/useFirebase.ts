@@ -131,38 +131,34 @@ export class FirebaseClient {
 }
 
 export const useFirebase = () => {
-  const { isLoading, error, data } = useQuery<string>(
-    FIREBASE_LOGIN_KEY,
-    async () => {
-      const firebaseConfig = {
-        apiKey: Constants?.manifest?.extra?.apiKey,
-        authDomain: Constants?.manifest?.extra?.authDomain,
-        projectId: Constants?.manifest?.extra?.projectId,
-        storageBucket: Constants?.manifest?.extra?.storageBucket,
-        messagingSenderId: Constants?.manifest?.extra?.messagingSenderId,
-        appId: Constants?.manifest?.extra?.appId,
-        measurementId: Constants?.manifest?.extra?.measurementId,
-      };
+  return useQuery<string>(FIREBASE_LOGIN_KEY, async () => {
+    const firebaseConfig = {
+      apiKey: Constants?.manifest?.extra?.apiKey,
+      authDomain: Constants?.manifest?.extra?.authDomain,
+      projectId: Constants?.manifest?.extra?.projectId,
+      storageBucket: Constants?.manifest?.extra?.storageBucket,
+      messagingSenderId: Constants?.manifest?.extra?.messagingSenderId,
+      appId: Constants?.manifest?.extra?.appId,
+      measurementId: Constants?.manifest?.extra?.measurementId,
+    };
 
-      !firebase.apps.length
-        ? firebase.initializeApp(firebaseConfig)
-        : firebase.app();
+    !firebase.apps.length
+      ? firebase.initializeApp(firebaseConfig)
+      : firebase.app();
 
-      const currentUser = FirebaseClient.getCurrentUser();
+    const currentUser = FirebaseClient.getCurrentUser();
 
-      if (currentUser) {
-        return currentUser.getIdToken(false);
-      }
-
-      const user: User = await FirebaseClient.userLogin(
-        Constants?.manifest?.extra?.user,
-        Constants?.manifest?.extra?.pass
-      );
-      const idToken = await user.getIdToken(false);
-      // consol,e.log("idToken", idToken);
-
-      return idToken;
+    if (currentUser) {
+      return currentUser.getIdToken(false);
     }
-  );
-  return { isLoading, error, data };
+
+    const user: User = await FirebaseClient.userLogin(
+      Constants?.manifest?.extra?.user,
+      Constants?.manifest?.extra?.pass
+    );
+    const idToken = await user.getIdToken(false);
+    // consol,e.log("idToken", idToken);
+
+    return idToken;
+  });
 };

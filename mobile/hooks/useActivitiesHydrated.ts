@@ -1,7 +1,8 @@
 import { useImplements } from "./useImplements";
-import { Activity, useActivities } from "./useActivities";
+import { useActivities, useActivity } from "./useActivities";
 import { useWeights } from "./useWeight";
 import { useMovements } from "./useMovement";
+import { Activities, Activity } from "../models/activities";
 
 export interface ActivityHydrayed extends Activity {
   implementName: string;
@@ -13,11 +14,34 @@ const getThingByName = (id: string, list: any[]) => {
   return list?.find((item) => item.id === id)?.name || "";
 };
 
-export const useActivitiesHydrated = (token: string): ActivityHydrayed[] => {
-  const { data: implementNames } = useImplements({ idToken: token || "" });
-  const { data: weightNames } = useWeights({ idToken: token || "" });
-  const { data: movementNames } = useMovements({ idToken: token || "" });
-  const { data: activities } = useActivities({ idToken: token || "" });
+export const useActivitiesHydrated = (
+  idToken: string = ""
+): ActivityHydrayed[] => {
+  const { data } = useActivities({ idToken });
+  return useActivitiesHydratedRaw({ idToken, activities: data });
+};
+
+export const useActivityHydrated = ({
+  id,
+  idToken = "",
+}: {
+  id: string;
+  idToken: string;
+}): ActivityHydrayed[] => {
+  const { data } = useActivity({ idToken, id });
+  return useActivitiesHydratedRaw({ idToken, activities: data });
+};
+
+export const useActivitiesHydratedRaw = ({
+  idToken = "",
+  activities,
+}: {
+  idToken: string;
+  activities?: Activities;
+}): ActivityHydrayed[] => {
+  const { data: implementNames } = useImplements({ idToken });
+  const { data: weightNames } = useWeights({ idToken });
+  const { data: movementNames } = useMovements({ idToken });
 
   if (!activities || !implementNames || !weightNames || !movementNames) {
     return [];

@@ -74,13 +74,16 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   row: {
-    width: "80%",
+    width: "100%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 10,
+    paddingTop: 1,
+    paddingBottom: 1,
   },
   textContainer: {
-    paddingRight: 40,
+    width: "79%",
   },
   buttonContainer: {},
   movementStyle: {

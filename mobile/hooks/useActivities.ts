@@ -1,79 +1,40 @@
-import last from "lodash/last";
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 import { FirebaseClient } from "../database/useFirebase";
+import { Activity, convertToRaw, fetchActivities } from "../models/activities";
 
-export const QUERY_ACCTIVITY_KEY = "activity";
-
-export interface Activity {
-  id?: string; // no id before create
-  user: string;
-  weight: string;
-  movement: string;
-  implement: string;
-}
-interface RawActivity {
-  name?: string;
-  fields?: {
-    user?: {
-      stringValue: string;
-    };
-    movement?: {
-      stringValue: string;
-    };
-    implement?: {
-      stringValue: string;
-    };
-    weight?: {
-      stringValue: string;
-    };
-  };
-}
-
-const convertToRaw = (item: Activity): RawActivity => {
-  return {
-    fields: {
-      user: {
-        stringValue: item.user,
-      },
-      movement: {
-        stringValue: item.movement,
-      },
-      implement: {
-        stringValue: item.implement,
-      },
-      weight: {
-        stringValue: item.weight,
-      },
-    },
-  };
+const activityKeys = {
+  all: ["activity"] as const,
+  lists: () => [...activityKeys.all, "list"] as const,
+  list: (filters: string) => [...activityKeys.lists(), { filters }] as const,
+  details: () => [...activityKeys.all, "detail"] as const,
+  detail: (id: number) => [...activityKeys.details(), id] as const,
 };
 
-export const useActivities = ({ idToken }: { idToken?: string }) => {
-  return useQuery<Activity[]>(QUERY_ACCTIVITY_KEY, async () => {
-    if (!idToken) {
-      return [];
-    }
-    const activities = await FirebaseClient.getData({
-      idToken,
-      key: "activities",
-    });
+export const useActivity = ({
+  id,
+  idToken,
+}: {
+  id?: string;
+  idToken?: string;
+}) => {
+  return useActivities({
+    idToken,
+    select: (data) => data.filter((item) => item.id === id),
+  });
+};
 
-    const processed: Activity[] = activities.map((item: RawActivity) => {
-      const id = item.name ? last(item.name.split("/")) : "unknown";
+export const useActivities = ({
+  idToken,
+  select,
+}: {
+  idToken?: string;
+  select?: (x: Activity[]) => Activity[];
+}) => {
+  const activityFetcher = () => fetchActivities({ idToken });
 
-      return {
-        id,
-        user: item.fields?.user?.stringValue,
-
-        // all id strings:
-        movement: item.fields?.movement?.stringValue,
-        implement: item.fields?.implement?.stringValue,
-        weight: item.fields?.weight?.stringValue,
-      };
-    });
-
-    return processed;
+  return useQuery<Activity[]>(activityKeys.all, activityFetcher, {
+    select,
   });
 };
 

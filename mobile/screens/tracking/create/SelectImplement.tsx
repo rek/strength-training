@@ -1,17 +1,21 @@
 import React from "react";
 import { atom, useRecoilState } from "recoil";
+import capitalize from "lodash/capitalize";
 import { Picker } from "@react-native-picker/picker";
 
 import { Text } from "../../../components/Themed";
 import { styles } from "../../elements";
+import { useImplements } from "../../../hooks";
 
 const selectedImplementState = atom({
   key: "selectImplement", // unique ID (with respect to other atoms/selectors)
-  default: 1 as number,
+  default: "1" as string,
 });
 
-export const SelectImplement: React.FC = () => {
+export const SelectImplement: React.FC<{ idToken: string }> = ({ idToken }) => {
   const [selectImplement, setSelectImplement] = useSelectedImplement();
+  const { data: items } = useImplements({ idToken });
+  const name = "implement";
 
   return (
     <>
@@ -21,10 +25,16 @@ export const SelectImplement: React.FC = () => {
         selectedValue={selectImplement}
         onValueChange={(itemValue, itemIndex) => setSelectImplement(itemValue)}
       >
-        <Picker.Item label="Kettlebell" value={1} style={styles.pickerItem} />
-        <Picker.Item label="Dumbbell" value={2} style={styles.pickerItem} />
-        <Picker.Item label="Barbell" value={3} style={styles.pickerItem} />
-        <Picker.Item label="Human Body" value={4} style={styles.pickerItem} />
+        {items?.map((item) => {
+          return (
+            <Picker.Item
+              label={capitalize(item.name)}
+              key={`${name}-${item.id}`}
+              value={item.id}
+              style={styles.pickerItem}
+            />
+          );
+        })}
       </Picker>
     </>
   );

@@ -1,17 +1,21 @@
 import React from "react";
 import { atom, useRecoilState } from "recoil";
+import capitalize from "lodash/capitalize";
 import { Picker } from "@react-native-picker/picker";
 
 import { Text } from "../../../components/Themed";
 import { styles } from "../../elements";
+import { useWeights } from "../../../hooks";
 
 const selectedWeightState = atom({
   key: "selectWeight", // unique ID (with respect to other atoms/selectors)
-  default: 16 as number,
+  default: "1" as string,
 });
 
-export const SelectWeight: React.FC = () => {
+export const SelectWeight: React.FC<{ idToken: string }> = ({ idToken }) => {
   const [selectWeight, setSelectWeight] = useSelectedWeight();
+  const { data: items } = useWeights({ idToken });
+  const name = "weight";
 
   return (
     <>
@@ -21,9 +25,16 @@ export const SelectWeight: React.FC = () => {
         selectedValue={selectWeight}
         onValueChange={(itemValue, itemIndex) => setSelectWeight(itemValue)}
       >
-        <Picker.Item label="6 kg" value={6} style={styles.pickerItem} />
-        <Picker.Item label="16 kg" value={16} style={styles.pickerItem} />
-        <Picker.Item label="24 kg" value={24} style={styles.pickerItem} />
+        {items?.map((item) => {
+          return (
+            <Picker.Item
+              label={capitalize(item.name)}
+              key={`${name}-${item.id}`}
+              value={item.id}
+              style={styles.pickerItem}
+            />
+          );
+        })}
       </Picker>
     </>
   );

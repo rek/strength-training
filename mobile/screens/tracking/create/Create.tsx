@@ -1,7 +1,8 @@
 import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 
-import { Text, View, Button, AddButton } from "../../../components";
+import { Text, View, Button, AddButton, Loading } from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 
 import { useSelectedWeight, SelectWeight } from "./SelectWeight";
@@ -10,20 +11,20 @@ import { SelectUser } from "./SelectUser";
 import { SelectImplement, useSelectedImplement } from "./SelectImplement";
 import { useCurrentUserState } from "../../../hooks/useUsers";
 import { createActivity } from "../../../hooks/useActivities";
-import { ProvideIDToken } from "../../../database/ProvideIDToken";
 import { useFirebase } from "../../../database/useFirebase";
-import { cloneElement } from "react";
+import { TrackingParamList } from "../../../navigation/types";
 
-export const CreateActivityScreen: React.FC = () => {
-  const { data: token } = useFirebase();
+type Props = StackScreenProps<TrackingParamList, "CreateActivityScreen">;
+export const CreateActivityScreen: React.FC<Props> = ({ navigation }) => {
+  const { data: idToken } = useFirebase();
   const [selectedExercise] = useSelectedExercise();
   const [selectedWeight] = useSelectedWeight();
   const [selectedImplement] = useSelectedImplement();
   const [selectedUser] = useCurrentUserState();
 
-  const create = createActivity(token || "");
+  const create = createActivity(idToken || "");
 
-  const handleClick = () => {
+  const handleClick = async () => {
     // console.log("selectedExercise", selectedExercise);
     // console.log("selectedWeight", selectedWeight);
     // console.log("selectedImplement", selectedImplement);
@@ -34,13 +35,19 @@ export const CreateActivityScreen: React.FC = () => {
       return;
     }
 
-    create({
+    await create({
       movement: selectedExercise,
       weight: selectedWeight,
       implement: selectedImplement,
       user: selectedUser,
     });
+
+    navigation.navigate("TrackingScreen");
   };
+
+  if (!idToken) {
+    return <Loading />;
+  }
 
   return (
     <View style={makePageStyle(styles.container)}>
@@ -48,13 +55,13 @@ export const CreateActivityScreen: React.FC = () => {
         <SelectUser />
       </View>
       <View style={makePageStyle(styles.mainBox)}>
-        <SelectWeight />
+        <SelectWeight idToken={idToken} />
       </View>
       <View style={makePageStyle(styles.mainBox)}>
-        <SelectImplement />
+        <SelectImplement idToken={idToken} />
       </View>
       <View style={makePageStyle(styles.mainBox)}>
-        <SelectExercise />
+        <SelectExercise idToken={idToken} />
       </View>
       <AddButton
         handleClick={handleClick}

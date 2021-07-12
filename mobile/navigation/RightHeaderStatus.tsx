@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 16,
     flexDirection: "row",
+    backgroundColor: Colors[CurrentTheme].header,
   },
   [UnsavedState.hasUnsaved]: {
     backgroundColor: Colors[CurrentTheme].hasUnsaved,

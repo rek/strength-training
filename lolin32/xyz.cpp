@@ -46,6 +46,7 @@ void showCalibrationValues(){
     //calibrationData.accel_radius = 2;
     //calibrationData.mag_radius = 0;
     //    }
+    Serial.println("");    
 }
 
 void XYZ::setup()
@@ -66,20 +67,19 @@ void XYZ::setup()
   }
 }
 
-void XYZ::doCalibration() {
-  uint8_t system = 0;
-  uint8_t gyro = 0;
-  uint8_t accel = 0;
-  uint8_t mag = 0;
-
+void XYZ::doCalibration(uint8_t system, uint8_t gyro, uint8_t accel, uint8_t mag) {
   bno.getCalibration(&system, &gyro, &accel, &mag);  
 
-  while (accel != 3 && system != 3) {
-//  while (mag != 3 && gyro != 3 && accel != 3 && system != 3) {
-    bno.getCalibration(&system, &gyro, &accel, &mag);
+  if (accel != 3 && system != 3) {
     showCalibrationValues();
-    Serial.println(""); 
-  } 
+    return;
+  }
+
+//  while (accel != 3 && system != 3) {
+////  while (mag != 3 && gyro != 3 && accel != 3 && system != 3) {
+//    bno.getCalibration(&system, &gyro, &accel, &mag);
+//    showCalibrationValues();
+//  } 
   
   Serial.println("Calibration complete!"); 
   isCalibrated = true;

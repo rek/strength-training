@@ -16,19 +16,57 @@ import { useActivityHydrated } from "../../../hooks/useActivitiesHydrated";
 import { typography } from "../../../styles/typography";
 import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
-import { start, stop } from "../../../models/device";
+import { checkIfCalibrated, start, status, stop } from "../../../models/device";
 
 import { trainingMachine } from "./startState";
 import { ChartData, LineChart } from "../../../components/LineChartChartKit";
+import { Stopwatch } from "../../../components/Stopwatch";
 
 type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
 export const StartActivityScreen: React.FC<Props> = ({ route }) => {
   const { data: idToken } = useFirebase();
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
+  const [foundDevice, setFoundDevice] = React.useState(false);
   const [networkStatus] = useNetworkStatus();
   const [currentState, send] = useMachine(trainingMachine);
   const [localData, setLocalData] = useLocalData();
   useKeepAwake();
+
+  React.useEffect(() => {
+    if (currentState.matches("unCalibrated")) {
+      const timer = setInterval(() => {
+        checkIfCalibrated().then((result) => {
+          if (result) {
+            send("NEXT");
+            clearInterval(timer);
+          }
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [networkStatus, currentState]);
+
+  React.useEffect(() => {
+    if (networkStatus === NetworkState.hasNothing) {
+      send("ERROR");
+    }
+
+    if (currentState.matches("noDevice")) {
+      status()
+        .then(() => {
+          console.log("currentState", currentState);
+          setFoundDevice(true);
+          if (currentState.matches("noDevice")) {
+            send("NEXT");
+          }
+        })
+        .catch(() => {
+          send("ERROR");
+          setFoundDevice(false);
+        });
+    }
+  }, [networkStatus, currentState]);
 
   // const { data } = useActivity({ idToken, id: route.params.id });
   const data = useActivityHydrated({
@@ -43,6 +81,8 @@ export const StartActivityScreen: React.FC<Props> = ({ route }) => {
   const currentActivity = data[0];
   console.log("currentActivity", currentActivity);
   console.log("localData", localData);
+  console.log("networkStatus", networkStatus);
+
   const title = currentActivity.movementName.toLocaleUpperCase();
 
   // get from state
@@ -106,7 +146,11 @@ export const StartActivityScreen: React.FC<Props> = ({ route }) => {
         )}
       </View>
       <View style={styles.footerContainer}>
-        {currentState.matches("inactive") && (
+        {currentState.matches("noDevice") && <Text>No device found.</Text>}
+        {currentState.matches("unCalibrated") && (
+          <Text>Waiting for calibration.</Text>
+        )}
+        {currentState.matches("ready") && (
           <ButtonNormal handleClick={handleClick}>Start</ButtonNormal>
         )}
         {currentState.matches("running") && (

@@ -11,5 +11,5 @@ public:
   bool isCalibrated;
   int getZReading();
   float getHeightReading();
-  void doCalibration();
+  void doCalibration(uint8_t system, uint8_t gyro, uint8_t accel, uint8_t mag);
 };

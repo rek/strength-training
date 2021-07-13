@@ -2,16 +2,22 @@ import { createMachine } from "xstate";
 
 export const trainingMachine = createMachine({
   id: "training",
-  initial: "inactive",
+  initial: "noDevice",
   states: {
-    inactive: {
-      on: { NEXT: "running", ERROR: "inactive" },
+    noDevice: {
+      on: { NEXT: "unCalibrated" },
+    },
+    unCalibrated: {
+      on: { NEXT: "ready", ERROR: "noDevice" },
+    },
+    ready: {
+      on: { NEXT: "running", ERROR: "noDevice" },
     },
     running: {
-      on: { NEXT: "hasRun", ERROR: "inactive" },
+      on: { NEXT: "hasRun", ERROR: "ready" },
     },
     hasRun: {
-      on: { NEXT: "inactive" },
+      on: { NEXT: "ready" },
     },
   },
 });

@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 
 import { View, Text } from "./Themed";
-import { AddIcon } from "./AddIcon";
+import { Icons } from "./icons";
 import { Button, Props as ButtonProps } from "./Button";
 
 interface Props extends ButtonProps {
@@ -13,7 +13,7 @@ export const AddButton: React.FC<Props> = ({ text, handleClick, ...rest }) => {
     <Button handleClick={handleClick} {...rest}>
       <View style={styles.container}>
         <View style={styles.icon}>
-          <AddIcon />
+          <Icons.Add />
         </View>
         <View style={styles.buttonText}>
           <Text>{text}</Text>

@@ -5,10 +5,11 @@ import { Text, View } from "./Themed";
 
 interface Props {
   error: string;
+  fullScreen?: boolean;
 }
-export const ErrorDisplay: React.FC<Props> = ({ error }) => {
+export const ErrorDisplay: React.FC<Props> = ({ error, fullScreen }) => {
   return (
-    <View style={styles.container}>
+    <View style={fullScreen ? styles.container : styles.box}>
       <Text>{error}</Text>
     </View>
   );
@@ -16,7 +17,12 @@ export const ErrorDisplay: React.FC<Props> = ({ error }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 300,
+    flex: 1,
+    width: "100%",
+    padding: "30px",
+  },
+  box: {
+    width: "100%",
     padding: "30px",
   },
 });

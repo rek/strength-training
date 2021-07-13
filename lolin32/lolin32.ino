@@ -1,6 +1,6 @@
 #include <WebServer.h>
-#include <iostream>     // std::cout, std::ios
-#include <sstream>      // std::ostringstream
+#include <iostream> // std::cout, std::ios
+#include <sstream>  // std::ostringstream
 
 #include "wifiBroadcast.h"
 #include "xyz.h"
@@ -18,12 +18,12 @@ int counter = 0;
 WebServer server(80);
 boolean recording = false;
 // std::ostringstream sensorReadings;
-std::ostringstream sensorReadings (std::ostringstream::ate);
+std::ostringstream sensorReadings(std::ostringstream::ate);
 
 void serverStartRecording()
 {
   Serial.println("Start recording");
-    
+
   // delete last recording
   counter = 0;
 
@@ -40,11 +40,12 @@ void serverStopRecording()
 {
   Serial.println("Stop recording");
 
-  if (recording) {
+  if (recording)
+  {
     // finish off data structure in the stream
     sensorReadings << "]}";
   }
-  
+
   // stop recording
   recording = false;
 
@@ -54,10 +55,14 @@ void serverIsCalibrated()
 {
   server.send(200, "text/plain", xyz.isCalibrated ? "true" : "false");
 }
+void serverGetStatus()
+{
+  server.send(200, "text/plain", "true");
+}
 void serverLastRecording()
 {
   Serial.println("Generate output");
-  
+
   // convet the stream into a string
   char output[sensorReadings.str().length() + 2] = {};
   strcpy(output, sensorReadings.str().c_str());
@@ -65,7 +70,7 @@ void serverLastRecording()
   Serial.println(output);
   server.send(200, "text/plain", output);
 
-  sensorReadings.clear();  
+  sensorReadings.clear();
   sensorReadings.str("");
 }
 
@@ -80,6 +85,7 @@ void setup(void)
   delay(500); // needs time to startup
 
   xyz.setup();
+  server.on("/_status", serverGetStatus);
   server.on("/start", serverStartRecording);
   server.on("/stop", serverStopRecording);
   server.on("/get", serverLastRecording);
@@ -92,25 +98,35 @@ void setup(void)
   Serial.println("");
 }
 
+uint8_t system_ = 0;
+uint8_t gyro = 0;
+uint8_t accel = 0;
+uint8_t mag = 0;
+
 void loop(void)
 {
   server.handleClient();
 
-  if (!xyz.isCalibrated) {
-    xyz.doCalibration();
-    return;  
+  if (!xyz.isCalibrated)
+  {
+    xyz.doCalibration(system_, gyro, accel, mag);
+    delay(100);
+    return;
   }
 
   if (recording)
   {
-    if (counter < BUFFER_MAX) {
+    if (counter < BUFFER_MAX)
+    {
       float dataItem = xyz.getHeightReading();
       sensorReadings << dataItem;
       sensorReadings << ",";
       Serial.println(dataItem);
       counter++;
-    } else {
-      Serial.println("Buffer full");      
+    }
+    else
+    {
+      Serial.println("Buffer full");
     }
   }
 

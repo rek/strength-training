@@ -11,6 +11,38 @@ export const start = () => {
     });
 };
 
+export const checkIfCalibrated = () => {
+  return axios
+    .get("http://192.168.1.1:80/isCalibrated")
+    .then((response) => {
+      console.log("isCalibrated response", response);
+      return response.data;
+    })
+    .catch((response) => {
+      console.log("Error response from isCalibrated", response);
+    });
+};
+
+export const status = () => {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject();
+    }, 1000);
+
+    axios
+      .get("http://192.168.1.1:80/_status")
+      .then((response) => {
+        clearTimeout(timer);
+        console.log("Status response", response);
+        resolve(response);
+      })
+      .catch((response) => {
+        console.log("Error response from status", response);
+        reject();
+      });
+  });
+};
+
 // const handleClickResult = () => {
 //   axios
 //     .get("http://192.168.1.1:80/get")

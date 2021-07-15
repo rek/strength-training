@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { Text, View, Button, AddButton, Loading } from "../../../components";
+import { View, Buttons, Loading } from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 
 import { useSelectedWeight, SelectWeight } from "./SelectWeight";
@@ -10,9 +10,10 @@ import { useSelectedExercise, SelectExercise } from "../create";
 import { SelectUser } from "./SelectUser";
 import { SelectImplement, useSelectedImplement } from "./SelectImplement";
 import { useCurrentUserState } from "../../../hooks/useUsers";
-import { createActivity } from "../../../hooks/useActivities";
 import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
+import { createActivity } from "../../../models/activities/queries";
+import { showToast } from "../../../components/Toast";
 
 type Props = StackScreenProps<TrackingParamList, "CreateActivityScreen">;
 export const CreateActivityScreen: React.FC<Props> = ({ navigation }) => {
@@ -42,6 +43,8 @@ export const CreateActivityScreen: React.FC<Props> = ({ navigation }) => {
       user: selectedUser,
     });
 
+    showToast({ text: "Activity created." });
+
     navigation.navigate("TrackingScreen");
   };
 
@@ -63,7 +66,7 @@ export const CreateActivityScreen: React.FC<Props> = ({ navigation }) => {
       <View style={makePageStyle(styles.mainBox)}>
         <SelectExercise idToken={idToken} />
       </View>
-      <AddButton
+      <Buttons.Add
         handleClick={handleClick}
         text="Create new"
         extraStyles={styles.pageStyle}

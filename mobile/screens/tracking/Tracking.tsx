@@ -1,17 +1,13 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { AddButtonSmall, View } from "../../components";
+import { Layouts, Loading, AddButtonSmall } from "../../components";
 
 import { ListScreen, EmptyScreen } from "./list";
 import { TrackingParamList } from "../../navigation/types";
 import { useFirebase } from "../../database/useFirebase";
-import {
-  ActivityHydrayed,
-  useActivitiesHydrated,
-} from "../../hooks/useActivitiesHydrated";
-import { Loading } from "../../components";
+import { useActivitiesHydrated } from "../../models/activities/queries";
+import { ActivityHydrayed } from "../../models/activities";
 
 type Props = StackScreenProps<TrackingParamList, "TrackingScreen">;
 export const TrackingScreen: React.FC<Props> = ({ navigation }) => {
@@ -30,35 +26,19 @@ export const TrackingScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
+    <Layouts.TopMiddle
+      renderTop={() => (
         <AddButtonSmall
           text="Add"
           handleClick={() => navigation.navigate("CreateActivityScreen")}
         />
-      </View>
-      <View style={styles.middleContent}>
-        {activities && activities.length > 0 ? (
-          <ListScreen activities={activities} handleClick={handleClick} />
-        ) : (
-          <EmptyScreen />
-        )}
-      </View>
-    </View>
+      )}
+    >
+      {activities && activities.length > 0 ? (
+        <ListScreen activities={activities} handleClick={handleClick} />
+      ) : (
+        <EmptyScreen />
+      )}
+    </Layouts.TopMiddle>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  middleContent: {
-    paddingTop: 100,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  topBar: {
-    flexFlow: "row wrap",
-    justifyContent: "flex-end",
-  },
-});

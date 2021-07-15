@@ -7,10 +7,15 @@ interface Props {
   error: string;
   fullScreen?: boolean;
 }
-export const ErrorDisplay: React.FC<Props> = ({ error, fullScreen }) => {
+export const ErrorDisplay: React.FC<Props> = ({
+  error,
+  fullScreen,
+  children,
+}) => {
   return (
     <View style={fullScreen ? styles.container : styles.box}>
       <Text>{error}</Text>
+      {children}
     </View>
   );
 };

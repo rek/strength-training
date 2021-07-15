@@ -1,0 +1,23 @@
+diff --git a/node_modules/react-native-root-toast/lib/ToastContainer.js b/node_modules/react-native-root-toast/lib/ToastContainer.js
+index 8eda285..553fe76 100644
+--- a/node_modules/react-native-root-toast/lib/ToastContainer.js
++++ b/node_modules/react-native-root-toast/lib/ToastContainer.js
+@@ -3,7 +3,6 @@ import React, {
+ } from 'react';
+ import PropTypes from 'prop-types';
+ import {
+-  ViewPropTypes,
+   StyleSheet,
+   View,
+   Text,
+@@ -21,6 +20,10 @@ const TOAST_MAX_WIDTH = 0.8;
+ const TOAST_ANIMATION_DURATION = 200;
+ const dimen = Dimensions.get('window');
+ 
++const ViewPropTypes = typeof document !== 'undefined' || Platform.OS === 'web'
++  ? PropTypes.shape({style: PropTypes.object})
++  : require('react-native').ViewPropTypes || View.propTypes;
++  
+ function isIphoneX() {
+   return (
+       Platform.OS === 'ios'

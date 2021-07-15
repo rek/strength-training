@@ -4,30 +4,42 @@ import { useMachine } from "@xstate/react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useKeepAwake } from "expo-keep-awake";
 
-import { ErrorDisplay } from "../../../components/Error";
-import { ButtonNormal, Text, View } from "../../../components";
+import {
+  ErrorDisplay,
+  Buttons,
+  Layouts,
+  Text,
+  View,
+  ChartData,
+  LineChart,
+} from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 import { useLocalData } from "../../../hooks/useLocalData";
 import {
   NetworkState,
   useNetworkStatus,
 } from "../../../hooks/useNetworkStatus";
-import { useActivityHydrated } from "../../../hooks/useActivitiesHydrated";
 import { typography } from "../../../styles/typography";
 import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
 import { checkIfCalibrated, start, status, stop } from "../../../models/device";
 
 import { trainingMachine } from "./startState";
-import { ChartData, LineChart } from "../../../components/LineChartChartKit";
 import { Stopwatch } from "../../../components/Stopwatch";
+import { StartAction } from "./StartAction";
+import {
+  useActivityHydrated,
+  useDeleteActivity,
+} from "../../../models/activities/queries";
+import { showToast } from "../../../components/Toast";
 
 type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
-export const StartActivityScreen: React.FC<Props> = ({ route }) => {
+export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   const { data: idToken } = useFirebase();
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
   const [foundDevice, setFoundDevice] = React.useState(false);
   const [networkStatus] = useNetworkStatus();
+  const deleteActivity = useDeleteActivity();
   const [currentState, send] = useMachine(trainingMachine);
   const [localData, setLocalData] = useLocalData();
   useKeepAwake();
@@ -74,8 +86,19 @@ export const StartActivityScreen: React.FC<Props> = ({ route }) => {
     id: route.params.id,
   });
 
+  const handleGoHome = () => {
+    navigation.navigate("TrackingScreen");
+  };
+
   if (data.length !== 1) {
-    return <ErrorDisplay error="Error fetching data" />;
+    return (
+      <ErrorDisplay error="Error fetching data">
+        <Buttons.Button
+          title="Click here to go home"
+          handleClick={handleGoHome}
+        ></Buttons.Button>
+      </ErrorDisplay>
+    );
   }
 
   const currentActivity = data[0];
@@ -130,49 +153,47 @@ export const StartActivityScreen: React.FC<Props> = ({ route }) => {
     send("NEXT");
   };
 
+  const handleDelete = () => {
+    if (currentActivity.id) {
+      deleteActivity({ idToken, id: currentActivity.id });
+      showToast({ text: "Activity deleted." });
+      // Toast.show("Activity deleted.", {
+      //   containerStyle: {},
+      //   textStyle: typography.family,
+      //   duration: Toast.durations.SHORT,
+      //   position: Toast.positions.BOTTOM,
+      // });
+      navigation.navigate("TrackingScreen");
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <View style={styles.errorBox}>
-          <Text style={styles.errorBanner}>{errorMessage}</Text>
+    <Layouts.TopMiddle
+      renderTop={() => <Buttons.Delete handleDelete={handleDelete} />}
+    >
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <View style={styles.errorBox}>
+            <Text style={styles.errorBanner}>{errorMessage}</Text>
+          </View>
+          <Text style={titleStyle}>{title}</Text>
         </View>
-        <Text style={titleStyle}>{title}</Text>
+        <View style={styles.mainContainer}>
+          {chartData ? (
+            <LineChart data={chartData} dotSize={2} disableXAxis />
+          ) : (
+            <Text>Results will appear here when available</Text>
+          )}
+        </View>
+        <View style={styles.footerContainer}>
+          <StartAction
+            handleClick={handleClick}
+            handleClickStop={handleClickStop}
+            handleClickReset={handleClickReset}
+          />
+        </View>
       </View>
-      <View style={styles.mainContainer}>
-        {chartData ? (
-          <LineChart data={chartData} dotSize={2} disableXAxis />
-        ) : (
-          <Text>Results will appear here when available</Text>
-        )}
-      </View>
-      <View style={styles.footerContainer}>
-        {currentState.matches("noDevice") && <Text>No device found.</Text>}
-        {currentState.matches("unCalibrated") && (
-          <Text>Waiting for calibration.</Text>
-        )}
-        {currentState.matches("ready") && (
-          <ButtonNormal handleClick={handleClick}>Start</ButtonNormal>
-        )}
-        {currentState.matches("running") && (
-          <ButtonNormal handleClick={handleClickStop}>Stop</ButtonNormal>
-        )}
-        {currentState.matches("hasRun") && (
-          <>
-            <ButtonNormal handleClick={handleClickReset}>Reset</ButtonNormal>
-            <Text>Log recorded and added!</Text>
-            {/* <View>
-            {data.length > 0 && (
-              <Text>
-              {data.map((item, index) => {
-                return <p key={`result-${index}`}>{item}</p>;
-              })}
-              </Text>
-              )}
-            </View> */}
-          </>
-        )}
-      </View>
-    </View>
+    </Layouts.TopMiddle>
   );
 };
 

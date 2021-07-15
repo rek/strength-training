@@ -47,7 +47,8 @@ export class FirebaseClient {
     }
   }
 
-  public static async getData({
+  public static async getData<T>({
+    // public static async getData<T extends { documents: any }>({
     idToken,
     key,
   }: {
@@ -56,12 +57,14 @@ export class FirebaseClient {
   }): Promise<any> {
     const client: HttpClient = FirebaseClient.getFirestoreClient(idToken);
 
-    const result = await client.getAs<any>(
+    const result = await client.getAs<T>(
       `${key}?key=${Constants?.manifest?.extra?.apiKey}`
     );
 
     if (result.success) {
+      console.log("result", result);
       const json = result.value;
+      console.log("json", json);
       return json.documents || [];
     }
 
@@ -86,11 +89,7 @@ export class FirebaseClient {
       value
     );
 
-    if (result.success) {
-      return true;
-    } else {
-      throw result.createError();
-    }
+    return this.createResult(result);
   }
 
   public static async writeData<T, K>({
@@ -108,6 +107,25 @@ export class FirebaseClient {
       value
     );
 
+    return this.createResult(result);
+  }
+
+  public static async deleteData({
+    idToken,
+    key,
+  }: {
+    idToken: string;
+    key: string;
+  }): Promise<boolean | Error> {
+    const client: HttpClient = FirebaseClient.getFirestoreClient(idToken);
+    const result: ApiResponse = await client.delete(
+      `${key}?key=${Constants?.manifest?.extra?.apiKey}`
+    );
+
+    return this.createResult(result);
+  }
+
+  private static createResult(result: ApiResponse) {
     if (result.success) {
       return true;
     } else {

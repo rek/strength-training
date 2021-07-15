@@ -1,14 +1,10 @@
-import { useImplements } from "./useImplements";
-import { useActivities, useActivity } from "./useActivities";
-import { useWeights } from "./useWeight";
-import { useMovements } from "./useMovement";
-import { Activities, Activity } from "../models/activities";
+import { useImplements } from "../../../hooks/useImplements";
+import { useWeights } from "../../../hooks/useWeight";
+import { useMovements } from "../../../hooks/useMovement";
 
-export interface ActivityHydrayed extends Activity {
-  implementName: string;
-  weightName: string;
-  movementName: string;
-}
+import { Activities } from "..";
+import { useActivities, useActivity } from "./useActivities";
+import { ActivityHydrayed } from "../types";
 
 const getThingByName = (id: string, list: any[]) => {
   return list?.find((item) => item.id === id)?.name || "";

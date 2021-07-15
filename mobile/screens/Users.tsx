@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { Button, View, RefreshView } from "../components";
+import { Buttons, View, RefreshView } from "../components";
 import { useCurrentUserState, User, allUsers } from "../hooks/useUsers";
 import { useUsers } from "../hooks/useFirebaseUsers";
 
@@ -23,13 +23,13 @@ export const UsersScreen = () => {
     <View style={styles.container}>
       {allUsers.map((user) => {
         return (
-          <Button
+          <Buttons.Button
             key={user.id}
             handleClick={handleClickUser(user.id)}
             extraStyles={user.id === currentUser ? styles.selected : undefined}
           >
             {user.display}
-          </Button>
+          </Buttons.Button>
         );
       })}
     </View>

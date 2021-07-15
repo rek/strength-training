@@ -6,29 +6,35 @@ import {
   StyleProp,
 } from "react-native";
 
-import Colors, { CurrentTheme } from "../constants/Colors";
+import Colors, { CurrentTheme } from "../../constants/Colors";
 
-import { Text, View } from "./Themed";
+import { Text, View } from "../Themed";
 
 export interface Props {
   id?: string;
   title?: string;
   extraStyles?: StyleProp<ViewStyle>;
   handleClick: (id?: string) => void;
+  handleLongPress?: (id: string) => void;
 }
 export const Button: React.FC<Props> = ({
   id,
   title,
   children,
   handleClick,
+  handleLongPress,
   extraStyles,
 }) => {
   const pressed = () => {
     handleClick(id);
   };
 
+  const longPress = () => {
+    handleLongPress && id && handleLongPress(id);
+  };
+
   return (
-    <TouchableOpacity onPress={pressed}>
+    <TouchableOpacity onPress={pressed} onLongPress={longPress}>
       <View style={[styles.buttonView, extraStyles]}>
         <Text
           style={styles.buttonText}

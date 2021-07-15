@@ -1,14 +1,15 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { View, Text } from "./Themed";
-import { Icons } from "./icons";
+import { View, Text } from "../Themed";
+import { Icons } from "../icons";
+
 import { Button, Props as ButtonProps } from "./Button";
 
 interface Props extends ButtonProps {
   text?: string;
 }
-export const AddButton: React.FC<Props> = ({ text, handleClick, ...rest }) => {
+export const Add: React.FC<Props> = ({ text, handleClick, ...rest }) => {
   return (
     <Button handleClick={handleClick} {...rest}>
       <View style={styles.container}>
@@ -26,7 +27,7 @@ export const AddButton: React.FC<Props> = ({ text, handleClick, ...rest }) => {
 export const AddButtonSmall: React.FC<Props> = (props) => {
   return (
     <View style={styles.small}>
-      <AddButton {...props} />
+      <Add {...props} />
     </View>
   );
 };

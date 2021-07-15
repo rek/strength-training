@@ -3,9 +3,7 @@ import daysjs from "dayjs";
 import { StyleSheet } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
-import { View, Text } from "../components/Themed";
-import { Button } from "../components";
-import RefreshView from "../components/RefreshView";
+import { RefreshView, Buttons, View, Text } from "../components";
 import { useLocalData } from "../hooks/useLocalData";
 import { LogsParamList } from "../navigation/types";
 
@@ -39,7 +37,7 @@ export const LogsScreen: React.FC<Props> = ({ navigation }) => {
             );
           })}
         </View>
-        <Button
+        <Buttons.Button
           title="Go to Settings"
           handleClick={() => navigation.navigate("SettingsScreen")}
         />

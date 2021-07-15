@@ -6,6 +6,12 @@ export interface Activity {
   implement: string;
 }
 
+export interface ActivityHydrayed extends Activity {
+  implementName: string;
+  weightName: string;
+  movementName: string;
+}
+
 export type Activities = Activity[];
 
 export interface RawActivity {

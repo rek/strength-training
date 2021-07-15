@@ -1,9 +1,9 @@
-import { useQuery, useMutation } from "react-query";
+import { useQueryClient, useQuery, useMutation } from "react-query";
 
-import { FirebaseClient } from "../database/useFirebase";
-import { Activity, convertToRaw, fetchActivities } from "../models/activities";
+import { FirebaseClient } from "../../../database/useFirebase";
+import { Activity, convertToRaw, fetchActivities } from "..";
 
-const activityKeys = {
+export const activityKeys = {
   all: ["activity"] as const,
   lists: () => [...activityKeys.all, "list"] as const,
   list: (filters: string) => [...activityKeys.lists(), { filters }] as const,
@@ -39,15 +39,31 @@ export const useActivities = ({
 };
 
 export const createActivity = (idToken: string) => {
-  const { mutate } = useMutation(async (value: Activity) => {
-    const newActivity = await FirebaseClient.writeData({
-      idToken,
-      key: "activities",
-      value: convertToRaw(value),
-    });
+  const queryClient = useQueryClient();
 
-    console.log("newActivity", newActivity);
-  });
+  const { mutate } = useMutation(
+    async (value: Activity) => {
+      const newActivity = await FirebaseClient.writeData({
+        idToken,
+        key: "activities",
+        value: convertToRaw(value),
+      });
+
+      // console.log("newActivity", newActivity);
+      return newActivity;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(activityKeys.all);
+      },
+    }
+  );
 
   return mutate;
+};
+
+export const invalidateActivities = () => {
+  const queryClient = useQueryClient();
+
+  queryClient.invalidateQueries(activityKeys.all);
 };

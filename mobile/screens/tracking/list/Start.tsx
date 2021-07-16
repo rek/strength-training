@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { useMachine } from "@xstate/react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useKeepAwake } from "expo-keep-awake";
+import last from "lodash/last";
 
 import {
   ErrorDisplay,
@@ -24,7 +25,6 @@ import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
 import { checkIfCalibrated, start, status, stop } from "../../../models/device";
 
-import TEMP_DATA from "../../../__fixtures__/y_2";
 import { trainingMachine } from "./startState";
 import { Stopwatch } from "../../../components/Stopwatch";
 import { StartAction } from "./StartAction";
@@ -34,12 +34,15 @@ import {
 } from "../../../models/activities/queries";
 import { showToast } from "../../../components/Toast";
 import { ActivityChart } from "./ActivityChart";
+import { getRepsFromLog } from "../../../models/log/getRepsFromLog";
+import { ActivityStats } from "./ActivityStats";
 
 type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
 export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   const { data: idToken } = useFirebase();
   const [errorMessage, setErrorMessage] = React.useState<string | undefined>();
   const [foundDevice, setFoundDevice] = React.useState(false);
+  const [chartData, setChartData] = React.useState<ChartData | undefined>();
   const [networkStatus] = useNetworkStatus();
   const deleteActivity = useDeleteActivity();
   const [currentState, send] = useMachine(trainingMachine);
@@ -88,7 +91,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   }, [networkStatus, currentState.value]);
 
   // const { data } = useActivity({ idToken, id: route.params.id });
-  const data = useActivityHydrated({
+  const { data, isLoading } = useActivityHydrated({
     idToken: idToken || "",
     id: route.params.id,
   });
@@ -96,6 +99,10 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   const handleGoHome = () => {
     navigation.navigate("TrackingScreen");
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (data.length !== 1) {
     return (
@@ -109,8 +116,8 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   }
 
   const currentActivity = data[0];
-  // console.log("currentActivity", currentActivity);
-  // console.log("localData", localData);
+  console.log("currentActivity", currentActivity);
+  console.log("localData", localData);
   console.log("networkStatus", networkStatus);
   console.log("currentState", currentState.value);
 
@@ -124,17 +131,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     return <Loading />;
   }
 
-  let count = 0;
-  const chartData: ChartData = TEMP_DATA.map((item: number) => ({
-    x: count++,
-    y: item,
-  }));
-
   const handleClick = () => {
-    // if (networkStatus !== NetworkState.hasDevice) {
-    //   setErrorMessage("Error, device not connected.");
-    //   return;
-    // }
     start();
     send("NEXT");
     setErrorMessage("");
@@ -146,6 +143,21 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
       setErrorMessage(result.errorMessage);
       send("ERROR");
     } else {
+      const reps = await getRepsFromLog({
+        rawData: result.data,
+        bodyWeight: currentActivity.userWeight,
+        timestamp: 0,
+        durationMillis: result.data.length * 10,
+      });
+
+      let count = 0;
+      setChartData(
+        result.data.map((item: number) => ({
+          x: count++,
+          y: item,
+        }))
+      );
+
       setLocalData([
         ...localData,
         {
@@ -154,6 +166,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
           movement: selectedExercise,
           weight: selectedWeight,
           created_at: +new Date(),
+          reps,
         },
       ]);
       send("NEXT");
@@ -173,6 +186,8 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   };
 
+  const lastLog = last(localData);
+
   return (
     <Layouts.TopMiddle
       renderTop={() => <Buttons.Delete handleDelete={handleDelete} />}
@@ -185,11 +200,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
           <Text style={titleStyle}>{title}</Text>
         </View>
         <View style={styles.mainContainer}>
-          {chartData ? (
-            <ActivityChart data={chartData} />
-          ) : (
-            <Text>Results will appear here when available</Text>
-          )}
+          {chartData && <ActivityChart data={chartData} />}
         </View>
         <View style={styles.footerContainer}>
           <StartAction
@@ -199,6 +210,9 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
             handleClickStop={handleClickStop}
             handleClickReset={handleClickReset}
           />
+          {currentState.matches("hasRun") && (
+            <ActivityStats reps={lastLog?.reps} />
+          )}
         </View>
       </View>
     </Layouts.TopMiddle>
@@ -227,6 +241,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 4,
     width: "100%",
+    minHeight: 200,
     backgroundColor: Colors[CurrentTheme].background,
     marginBottom: 10,
   },

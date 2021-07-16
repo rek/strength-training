@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { ActivityIndicator } from "react-native";
+import { Layouts } from "./layouts";
 
 export const Loading: React.FC = () => {
   return (
-    <View>
-      <Text>Loading...</Text>
-    </View>
+    <Layouts.Center>
+      <ActivityIndicator size="large" />
+    </Layouts.Center>
   );
 };

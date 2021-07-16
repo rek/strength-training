@@ -4,12 +4,12 @@ import { StyleSheet } from "react-native";
 import { View } from "../Themed";
 
 interface Props {
-  renderTop: () => React.ReactElement;
+  renderTop?: () => React.ReactElement;
 }
 export const TopMiddle: React.FC<Props> = ({ renderTop, children }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.topBar}>{renderTop()}</View>
+      <View style={styles.topBar}>{renderTop && renderTop()}</View>
       <View style={styles.middleContent}>{children}</View>
     </View>
   );

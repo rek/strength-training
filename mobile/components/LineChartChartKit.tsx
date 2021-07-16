@@ -2,6 +2,7 @@ import React from "react";
 import daysjs from "dayjs";
 import { View, Dimensions } from "react-native";
 import { LineChart as LineChartRaw } from "react-native-chart-kit";
+import { LineChartProps } from "react-native-chart-kit/dist/line-chart/LineChart";
 
 export type ChartDataItem = {
   y: number;
@@ -9,8 +10,8 @@ export type ChartDataItem = {
 };
 export type ChartData = ChartDataItem[];
 
-interface Props {
-  data: ChartData;
+interface Props extends Partial<LineChartProps> {
+  simpleData: ChartData;
   xFormat?: string;
   disableXAxis?: boolean;
   dotSize?: number;
@@ -18,18 +19,21 @@ interface Props {
   yAxisLabel?: string;
 }
 export const LineChart: React.FC<Props> = ({
-  data,
+  simpleData,
   disableXAxis,
   dotSize = 6,
   xFormat = "DD/MM",
   yAxisSuffix = "",
   yAxisLabel = "",
+  ...rest
 }) => {
   // console.log("data", data);
 
-  if (!data || data.length === 0) {
+  if (!simpleData || simpleData.length === 0) {
     return null;
   }
+
+  const data = simpleData;
 
   const height = 250;
   // const screenWidth = 1000;
@@ -75,6 +79,12 @@ export const LineChart: React.FC<Props> = ({
         // horizontalLabelRotation={0}
         xLabelsOffset={-10}
         // yLabelsOffset={0}
+
+        withDots={true}
+        withShadow={true}
+        withOuterLines={true}
+        withVerticalLines={true}
+        withHorizontalLines={false}
         segments={5}
         yAxisLabel={yAxisLabel}
         yAxisSuffix={yAxisSuffix}
@@ -95,13 +105,14 @@ export const LineChart: React.FC<Props> = ({
             stroke: "#ffa726",
           },
         }}
-        bezier={false}
         style={
           {
+            // data: { stroke: "#c43a31", strokeWidth: 15, strokeLinecap: "round" }
             // marginVertical: 8,
             // borderRadius: 16,
           }
         }
+        {...rest}
       />
     </View>
   );

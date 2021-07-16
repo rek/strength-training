@@ -16,10 +16,12 @@ export const Activity: React.FC<{
   const handleDelete = (id: string) => () => {
     console.log("handleDelete", id);
   };
+
   const handleLongPress = (id: string) => {
     console.log("handleLongPress", id);
     Alerts.deleteAlert({ handleOk: handleDelete(id) });
   };
+
   const proxyHandleClick = () => {
     handleClick(activity);
   };
@@ -28,7 +30,7 @@ export const Activity: React.FC<{
     <View style={containerStyles}>
       <View style={styles.textContainer}>
         <Text>
-          {capitalize(activity.user)}
+          {capitalize(activity.userName)}
           <ActivityIcon name={activity.implementName} />
           {activity.weightName}
         </Text>

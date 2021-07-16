@@ -1,5 +1,6 @@
 import { atom, useRecoilState } from "recoil";
 
+import { Rep } from "../models/log/types";
 import { User } from "./useUsers";
 export interface LocalData {
   user: User["id"];
@@ -7,6 +8,7 @@ export interface LocalData {
   movement: string;
   created_at: number;
   data: number[];
+  reps?: Rep[];
   is_synced?: boolean;
 }
 

@@ -6,5 +6,13 @@ interface Props {
   data: ChartData;
 }
 export const ActivityChart: React.FC<Props> = ({ data }) => {
-  return <LineChart data={data} dotSize={2} disableXAxis />;
+  return (
+    <LineChart
+      simpleData={data}
+      dotSize={1}
+      disableXAxis={false}
+      withInnerLines={false}
+      bezier={false}
+    />
+  );
 };

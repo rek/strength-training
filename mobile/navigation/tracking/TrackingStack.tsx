@@ -1,6 +1,10 @@
 import * as React from "react";
 
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  HeaderBackButton,
+  StackScreenProps,
+} from "@react-navigation/stack";
 
 import { TrackingParamList } from "../types";
 import { RightHeaderStatus } from "../RightHeaderStatus";
@@ -13,19 +17,11 @@ import { TabBarIcon } from "../BottomTabNavigator";
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export const TrackingStack = createStackNavigator<TrackingParamList>();
 
-// export const ActivityStack = createStackNavigator<ActivityParamList>();
-// export const ActivityNavigator = () => {
-//   return (
-//     <ActivityStack.Navigator initialRouteName="TrackingScreen">
-//       <ActivityStack.Screen
-//         name="TrackingScreen"
-//         component={TrackingScreen}
-//         />
-//     </ActivityStack.Navigator>
-//   );
-// };
-
-export const TrackingNavigator = () => {
+type Props = StackScreenProps<TrackingParamList, "TrackingScreen">;
+export const TrackingNavigator: React.FC<Props> = ({ navigation }) => {
+  const handleBack = () => {
+    navigation.navigate("TrackingScreen");
+  };
   return (
     <TrackingStack.Navigator>
       <TrackingStack.Screen
@@ -36,7 +32,11 @@ export const TrackingNavigator = () => {
       <TrackingStack.Screen
         name="StartActivityScreen"
         component={StartActivityScreen}
-        options={{ headerTitle: "Start", headerRight: RightHeaderStatus }}
+        options={{
+          headerTitle: "Start",
+          headerLeft: () => <HeaderBackButton onPress={handleBack} />,
+          headerRight: RightHeaderStatus,
+        }}
       />
       <TrackingStack.Screen
         name="CreateActivityScreen"

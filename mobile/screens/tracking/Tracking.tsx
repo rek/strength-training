@@ -15,7 +15,6 @@ export const TrackingScreen: React.FC<Props> = ({ navigation }) => {
   const activities = useActivitiesHydrated(idToken);
 
   const handleClick = (activity: ActivityHydrayed) => {
-    console.log("activity", activity);
     if (activity.id) {
       navigation.navigate("StartActivityScreen", { id: activity.id });
     }

@@ -9,7 +9,7 @@ export default {
           SettingsScreen: "SettingsScreen",
           Tracking: {
             screens: {
-              TrackingScreen: "Tracking",
+              TrackingScreen: "TrackingScreen",
               StartActivityScreen: "StartActivityScreen",
               CreateActivityScreen: "CreateActivityScreen",
             },

@@ -1,14 +1,14 @@
 import React from "react";
-import { atom, useRecoilState } from "recoil";
 import { Picker } from "@react-native-picker/picker";
 
 import { Text } from "../../../components/Themed";
-import { allUsers, useCurrentUserState } from "../../../hooks/useUsers";
+import { useCurrentUserState, useUsers } from "../../../hooks/useUsers";
 
 import { styles } from "../../elements";
 
-export const SelectUser: React.FC = () => {
+export const SelectUser: React.FC<{ idToken: string }> = ({ idToken }) => {
   const [selectedUser, setSelectedUser] = useCurrentUserState();
+  const { data: allUsers } = useUsers({ idToken });
   // console.log("selectedUser", selectedUser);
 
   return (
@@ -26,9 +26,9 @@ export const SelectUser: React.FC = () => {
           <Picker.Item label={"Select a user..."} value={""} />
         )}
 
-        {allUsers.map((user) => (
+        {allUsers?.map((user) => (
           <Picker.Item
-            label={user.display}
+            label={user.name}
             value={user.id}
             key={user.id}
             style={styles.pickerItem}

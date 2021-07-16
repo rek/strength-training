@@ -10,6 +10,9 @@ export interface ActivityHydrayed extends Activity {
   implementName: string;
   weightName: string;
   movementName: string;
+
+  userName: string;
+  userWeight: number;
 }
 
 export type Activities = Activity[];

@@ -1,12 +1,16 @@
+import capitalize from "lodash/capitalize";
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
 import { Buttons, View, RefreshView } from "../components";
-import { useCurrentUserState, User, allUsers } from "../hooks/useUsers";
-import { useUsers } from "../hooks/useFirebaseUsers";
+import { useFirebase } from "../database/useFirebase";
+import { useCurrentUserState } from "../hooks/useUsers";
+import { useUsers } from "../hooks/useUsers";
 
 export const UsersScreen = () => {
   const [currentUser, setCurrentUser] = useCurrentUserState();
+  const { data: idToken } = useFirebase();
+  const { data: allUsers } = useUsers({ idToken });
 
   const refreshAction = () => {
     return Promise.resolve();
@@ -21,14 +25,14 @@ export const UsersScreen = () => {
   return (
     // <RefreshView refreshAction={refreshAction}>
     <View style={styles.container}>
-      {allUsers.map((user) => {
+      {allUsers?.map((user) => {
         return (
           <Buttons.Button
             key={user.id}
             handleClick={handleClickUser(user.id)}
             extraStyles={user.id === currentUser ? styles.selected : undefined}
           >
-            {user.display}
+            {capitalize(user.name)}
           </Buttons.Button>
         );
       })}

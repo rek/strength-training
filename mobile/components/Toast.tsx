@@ -13,3 +13,10 @@ export const showToast = ({ text }: Props) => {
     console.log("----------------------------");
   }
 };
+
+// Toast.show("Activity deleted.", {
+//   containerStyle: {},
+//   textStyle: typography.family,
+//   duration: Toast.durations.SHORT,
+//   position: Toast.positions.BOTTOM,
+// });

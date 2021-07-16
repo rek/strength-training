@@ -19,25 +19,31 @@ interface RawImplement {
 }
 
 export const useImplements = ({ idToken }: { idToken?: string }) => {
-  return useQuery<Implement[]>(QUERY_KEY_IMPLEMENTS, async () => {
-    if (!idToken) {
-      return [];
+  return useQuery<Implement[]>(
+    QUERY_KEY_IMPLEMENTS,
+    async () => {
+      if (!idToken) {
+        return [];
+      }
+      const items = await FirebaseClient.getData({
+        idToken,
+        key: "implements",
+      });
+
+      const processed: Implement[] = items.map((item: RawImplement) => {
+        // name is id
+        const id = item.name ? last(item.name?.split("/")) : "unknown";
+
+        return {
+          id,
+          name: item.fields?.name?.stringValue,
+        };
+      });
+
+      return processed;
+    },
+    {
+      staleTime: Infinity,
     }
-    const items = await FirebaseClient.getData({
-      idToken,
-      key: "implements",
-    });
-
-    const processed: Implement[] = items.map((item: RawImplement) => {
-      // name is id
-      const id = item.name ? last(item.name?.split("/")) : "unknown";
-
-      return {
-        id,
-        name: item.fields?.name?.stringValue,
-      };
-    });
-
-    return processed;
-  });
+  );
 };

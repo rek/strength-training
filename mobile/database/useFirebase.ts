@@ -57,14 +57,12 @@ export class FirebaseClient {
   }): Promise<any> {
     const client: HttpClient = FirebaseClient.getFirestoreClient(idToken);
 
-    const result = await client.getAs<T>(
+    const result = await client.getAs<{ documents: T }>(
       `${key}?key=${Constants?.manifest?.extra?.apiKey}`
     );
 
     if (result.success) {
-      console.log("result", result);
       const json = result.value;
-      console.log("json", json);
       return json.documents || [];
     }
 

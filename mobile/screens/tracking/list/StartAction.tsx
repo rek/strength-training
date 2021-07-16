@@ -1,25 +1,29 @@
 import React from "react";
-import { useMachine } from "@xstate/react";
+import { State } from "xstate";
 
 import { Buttons, Text, View } from "../../../components";
 
-import { trainingMachine } from "./startState";
-
 interface Props {
+  currentState: State<any>;
   handleClick: () => void;
   handleClickStop: () => void;
   handleClickReset: () => void;
+  handleDetectDevice: () => void;
 }
 export const StartAction: React.FC<Props> = ({
+  currentState,
+  handleDetectDevice,
   handleClickReset,
   handleClick,
   handleClickStop,
 }) => {
-  const [currentState, send] = useMachine(trainingMachine);
-
   return (
     <View>
-      {currentState.matches("noDevice") && <Text>No device found.</Text>}
+      {currentState.matches("noDevice") && (
+        <Buttons.Button handleClick={handleDetectDevice}>
+          No device found. Check again?
+        </Buttons.Button>
+      )}
       {currentState.matches("unCalibrated") && (
         <Text>Waiting for calibration.</Text>
       )}
@@ -34,21 +38,9 @@ export const StartAction: React.FC<Props> = ({
         </Buttons.ButtonNormal>
       )}
       {currentState.matches("hasRun") && (
-        <>
-          <Buttons.ButtonNormal handleClick={handleClickReset}>
-            Reset
-          </Buttons.ButtonNormal>
-          <Text>Log recorded and added!</Text>
-          {/* <View>
-            {data.length > 0 && (
-              <Text>
-              {data.map((item, index) => {
-                return <p key={`result-${index}`}>{item}</p>;
-              })}
-              </Text>
-              )}
-            </View> */}
-        </>
+        <Buttons.Button handleClick={handleClickReset}>
+          Log recorded and added, click to reset.
+        </Buttons.Button>
       )}
     </View>
   );

@@ -11,7 +11,7 @@ import {
   Text,
   View,
   ChartData,
-  LineChart,
+  Loading,
 } from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 import { useLocalData } from "../../../hooks/useLocalData";
@@ -24,6 +24,7 @@ import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
 import { checkIfCalibrated, start, status, stop } from "../../../models/device";
 
+import TEMP_DATA from "../../../__fixtures__/y_2";
 import { trainingMachine } from "./startState";
 import { Stopwatch } from "../../../components/Stopwatch";
 import { StartAction } from "./StartAction";
@@ -32,6 +33,7 @@ import {
   useDeleteActivity,
 } from "../../../models/activities/queries";
 import { showToast } from "../../../components/Toast";
+import { ActivityChart } from "./ActivityChart";
 
 type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
 export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
@@ -47,6 +49,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   React.useEffect(() => {
     if (currentState.matches("unCalibrated")) {
       const timer = setInterval(() => {
+        console.log("Calibration timer running!");
         checkIfCalibrated().then((result) => {
           if (result) {
             send("NEXT");
@@ -57,13 +60,9 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
 
       return () => clearInterval(timer);
     }
-  }, [networkStatus, currentState]);
+  }, [networkStatus, currentState.value]);
 
-  React.useEffect(() => {
-    if (networkStatus === NetworkState.hasNothing) {
-      send("ERROR");
-    }
-
+  const checkDeviceStatus = () => {
     if (currentState.matches("noDevice")) {
       status()
         .then(() => {
@@ -78,7 +77,15 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
           setFoundDevice(false);
         });
     }
-  }, [networkStatus, currentState]);
+  };
+
+  React.useEffect(() => {
+    if (networkStatus === NetworkState.hasNothing) {
+      send("ERROR");
+    }
+
+    checkDeviceStatus();
+  }, [networkStatus, currentState.value]);
 
   // const { data } = useActivity({ idToken, id: route.params.id });
   const data = useActivityHydrated({
@@ -102,9 +109,10 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   }
 
   const currentActivity = data[0];
-  console.log("currentActivity", currentActivity);
-  console.log("localData", localData);
+  // console.log("currentActivity", currentActivity);
+  // console.log("localData", localData);
   console.log("networkStatus", networkStatus);
+  console.log("currentState", currentState.value);
 
   const title = currentActivity.movementName.toLocaleUpperCase();
 
@@ -112,11 +120,15 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   const selectedExercise = currentActivity.movement;
   const selectedWeight = currentActivity.weight;
 
-  const chartData: ChartData = [
-    { x: 1, y: 1 },
-    { x: 2, y: 2 },
-    { x: 3, y: 3 },
-  ];
+  if (!currentState) {
+    return <Loading />;
+  }
+
+  let count = 0;
+  const chartData: ChartData = TEMP_DATA.map((item: number) => ({
+    x: count++,
+    y: item,
+  }));
 
   const handleClick = () => {
     // if (networkStatus !== NetworkState.hasDevice) {
@@ -157,12 +169,6 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     if (currentActivity.id) {
       deleteActivity({ idToken, id: currentActivity.id });
       showToast({ text: "Activity deleted." });
-      // Toast.show("Activity deleted.", {
-      //   containerStyle: {},
-      //   textStyle: typography.family,
-      //   duration: Toast.durations.SHORT,
-      //   position: Toast.positions.BOTTOM,
-      // });
       navigation.navigate("TrackingScreen");
     }
   };
@@ -180,13 +186,15 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
         </View>
         <View style={styles.mainContainer}>
           {chartData ? (
-            <LineChart data={chartData} dotSize={2} disableXAxis />
+            <ActivityChart data={chartData} />
           ) : (
             <Text>Results will appear here when available</Text>
           )}
         </View>
         <View style={styles.footerContainer}>
           <StartAction
+            currentState={currentState}
+            handleDetectDevice={checkDeviceStatus}
             handleClick={handleClick}
             handleClickStop={handleClickStop}
             handleClickReset={handleClickReset}

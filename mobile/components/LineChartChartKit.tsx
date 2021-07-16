@@ -83,7 +83,7 @@ export const LineChart: React.FC<Props> = ({
           backgroundColor: "#333",
           backgroundGradientFrom: "#333",
           backgroundGradientTo: "#333",
-          decimalPlaces: 2, // optional, defaults to 2dp
+          decimalPlaces: 1, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
@@ -95,7 +95,7 @@ export const LineChart: React.FC<Props> = ({
             stroke: "#ffa726",
           },
         }}
-        bezier
+        bezier={false}
         style={
           {
             // marginVertical: 8,

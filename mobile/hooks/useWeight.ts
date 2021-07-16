@@ -19,25 +19,31 @@ interface RawWeight {
 }
 
 export const useWeights = ({ idToken }: { idToken?: string }) => {
-  return useQuery<Weight[]>(QUERY_KEY, async () => {
-    if (!idToken) {
-      return [];
+  return useQuery<Weight[]>(
+    QUERY_KEY,
+    async () => {
+      if (!idToken) {
+        return [];
+      }
+      const items = await FirebaseClient.getData({
+        idToken,
+        key: "weight",
+      });
+
+      const processed: Weight[] = items.map((item: RawWeight) => {
+        // name is id
+        const id = item.name ? last(item.name?.split("/")) : "unknown";
+
+        return {
+          id,
+          name: item.fields?.name?.stringValue,
+        };
+      });
+
+      return processed;
+    },
+    {
+      staleTime: Infinity,
     }
-    const items = await FirebaseClient.getData({
-      idToken,
-      key: "weight",
-    });
-
-    const processed: Weight[] = items.map((item: RawWeight) => {
-      // name is id
-      const id = item.name ? last(item.name?.split("/")) : "unknown";
-
-      return {
-        id,
-        name: item.fields?.name?.stringValue,
-      };
-    });
-
-    return processed;
-  });
+  );
 };

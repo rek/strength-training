@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import useCachedResources from "./hooks/useCachedResources";
+import { CachedResources } from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
@@ -18,14 +18,10 @@ if (LogBox) {
 }
 
 export default function App() {
-  const isCacheLoaded = useCachedResources();
   const colorScheme = useColorScheme();
 
-  if (!isCacheLoaded) {
-    return null;
-  }
-
   return (
+    // <CachedResources>
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <SafeAreaProvider>
@@ -36,5 +32,6 @@ export default function App() {
         </SafeAreaProvider>
       </RecoilRoot>
     </QueryClientProvider>
+    // </CachedResources>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
-
+import { Text as DefaultText, View as DefaultView } from "react-native";
 import { Layouts, Loading, AddButtonSmall } from "../../components";
 
 import { ListScreen, EmptyScreen } from "./list";

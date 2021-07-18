@@ -1,6 +1,8 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
+import Colors, { CurrentTheme } from "../../constants/Colors";
+
 import { View, Text } from "../Themed";
 import { Icons } from "../icons";
 
@@ -34,15 +36,15 @@ export const AddButtonSmall: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "inherit",
+    backgroundColor: Colors[CurrentTheme].background,
     alignItems: "center",
-    flexFlow: "row wrap",
+    flexDirection: "row",
   },
   icon: {
-    backgroundColor: "inherit",
+    backgroundColor: Colors[CurrentTheme].background,
   },
   buttonText: {
-    backgroundColor: "inherit",
+    backgroundColor: Colors[CurrentTheme].background,
   },
   small: {
     width: 120,

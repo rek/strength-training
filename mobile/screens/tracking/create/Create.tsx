@@ -6,7 +6,7 @@ import { View, Buttons, Loading } from "../../../components";
 import Colors, { CurrentTheme } from "../../../constants/Colors";
 
 import { useSelectedWeight, SelectWeight } from "./SelectWeight";
-import { useSelectedExercise, SelectExercise } from "../create";
+import { useSelectedExercise, SelectExercise } from "./SelectExercise";
 import { SelectUser } from "./SelectUser";
 import { SelectImplement, useSelectedImplement } from "./SelectImplement";
 import { useCurrentUserState } from "../../../hooks/useUsers";
@@ -55,7 +55,7 @@ export const CreateActivityScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={makePageStyle(styles.container)}>
       <View style={makePageStyle(styles.mainBox)}>
-        <SelectUser />
+        <SelectUser idToken={idToken} />
       </View>
       <View style={makePageStyle(styles.mainBox)}>
         <SelectWeight idToken={idToken} />

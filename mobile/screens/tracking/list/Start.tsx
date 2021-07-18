@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import { useMachine } from "@xstate/react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useKeepAwake } from "expo-keep-awake";
@@ -219,6 +219,13 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   );
 };
 
+const errorBox: ViewStyle = {
+  backgroundColor: Colors[CurrentTheme].background,
+  borderWidth: 2,
+  padding: 20,
+  borderColor: "#fe5523",
+};
+
 const styles = StyleSheet.create({
   errorBanner: {
     color: Colors[CurrentTheme].error,
@@ -226,12 +233,7 @@ const styles = StyleSheet.create({
   title: {
     borderBottomWidth: 1,
   },
-  errorBox: {
-    backgroundColor: Colors[CurrentTheme].background,
-    border: 2,
-    padding: 20,
-    borderColor: "#fe5523",
-  },
+  errorBox,
   titleContainer: {
     flex: 1,
   },

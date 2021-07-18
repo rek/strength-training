@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBar: {
-    flexFlow: "row wrap",
+    flexDirection: "row",
+    alignItems: "flex-end",
     justifyContent: "flex-end",
   },
   middleContent: {

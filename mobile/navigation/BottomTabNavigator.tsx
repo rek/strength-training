@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
@@ -10,6 +9,7 @@ import { BottomTabParamList, UsersParamList } from "./types";
 import { UsersScreen } from "../screens";
 import { TrackingIcon, TrackingNavigator } from "./tracking/TrackingStack";
 import { LogsIcon, LogsNavigator } from "./logs/LogsStack";
+import { TabBarIcon } from "./TabBarIcon";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -65,15 +65,6 @@ export default function BottomTabNavigator() {
     </BottomTab.Navigator>
   );
 }
-
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-export const TabBarIcon = (props: {
-  name: React.ComponentProps<typeof Ionicons>["name"];
-  color: string;
-}) => {
-  return <Ionicons size={30} style={{ marginBottom: -4 }} {...props} />;
-};
 
 const TabTwoStack = createStackNavigator<UsersParamList>();
 

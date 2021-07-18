@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ViewStyle,
+  TextStyle,
   StyleProp,
 } from "react-native";
 
@@ -14,6 +15,7 @@ export interface Props {
   id?: string;
   title?: string;
   extraStyles?: StyleProp<ViewStyle>;
+  extraTextStyles?: StyleProp<TextStyle>;
   handleClick: (id?: string) => void;
   handleLongPress?: (id: string) => void;
 }
@@ -24,6 +26,7 @@ export const Button: React.FC<Props> = ({
   handleClick,
   handleLongPress,
   extraStyles,
+  extraTextStyles,
 }) => {
   const pressed = () => {
     handleClick(id);
@@ -37,7 +40,7 @@ export const Button: React.FC<Props> = ({
     <TouchableOpacity onPress={pressed} onLongPress={longPress}>
       <View style={[styles.buttonView, extraStyles]}>
         <Text
-          style={styles.buttonText}
+          style={[styles.buttonText, extraTextStyles]}
           lightColor={false ? Colors.light.tint : Colors.dark.tint}
         >
           {title}
@@ -49,7 +52,13 @@ export const Button: React.FC<Props> = ({
 };
 
 export const ButtonNormal: React.FC<Props> = (props) => {
-  return <Button {...props} extraStyles={styles.normal} />;
+  return (
+    <Button
+      {...props}
+      extraStyles={styles.normal}
+      extraTextStyles={styles.normalText}
+    />
+  );
 };
 
 export const ButtonSmall: React.FC<Props> = (props) => {
@@ -63,12 +72,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors[CurrentTheme].border,
     borderRadius: 48,
-  },
-  buttonView: {
     margin: "10px",
   },
-  buttonText: {
+  normalText: {
     textAlign: "center",
-    // alignItems: "center",
   },
+  buttonView: {},
+  buttonText: {},
 });

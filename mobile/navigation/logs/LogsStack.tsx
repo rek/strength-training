@@ -3,9 +3,9 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { LogsParamList } from "../types";
-import { RightHeaderStatus } from "../RightHeaderStatus";
+// import { RightHeaderStatus } from "../RightHeaderStatus";
 import { LogsScreen, Settings } from "../../screens";
-import { TabBarIcon } from "../BottomTabNavigator";
+import { TabBarIcon } from "../TabBarIcon";
 
 const LogsStack = createStackNavigator<LogsParamList>();
 export const LogsNavigator = () => {

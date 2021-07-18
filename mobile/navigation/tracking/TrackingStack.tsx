@@ -11,7 +11,7 @@ import { RightHeaderStatus } from "../RightHeaderStatus";
 
 import { TrackingScreen, CreateActivityScreen } from "../../screens/tracking";
 import { StartActivityScreen } from "../../screens/tracking/list/Start";
-import { TabBarIcon } from "../BottomTabNavigator";
+import { TabBarIcon } from "../TabBarIcon";
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab

@@ -13,7 +13,7 @@ import { Text, View } from "../Themed";
 
 export interface Props {
   id?: string;
-  title?: string;
+  text?: string;
   extraStyles?: StyleProp<ViewStyle>;
   extraTextStyles?: StyleProp<TextStyle>;
   handleClick: (id?: string) => void;
@@ -21,7 +21,7 @@ export interface Props {
 }
 export const Button: React.FC<Props> = ({
   id,
-  title,
+  text,
   children,
   handleClick,
   handleLongPress,
@@ -42,12 +42,12 @@ export const Button: React.FC<Props> = ({
       onLongPress={longPress}
       style={[styles.buttonView, extraStyles]}
     >
-      {title && (
+      {text && (
         <Text
           style={[styles.buttonText, extraTextStyles]}
-          lightColor={false ? Colors.light.tint : Colors.dark.tint}
+          // lightColor={false ? Colors.light.tint : Colors.dark.tint}
         >
-          {title}
+          {text}
         </Text>
       )}
       {children}
@@ -66,10 +66,20 @@ export const ButtonNormal: React.FC<Props> = (props) => {
 };
 
 export const ButtonSmall: React.FC<Props> = (props) => {
-  return <Button {...props} />;
+  return (
+    <Button
+      {...props}
+      extraStyles={styles.small}
+      extraTextStyles={styles.smallText}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
+  small: {
+    width: 120,
+    padding: 10,
+  },
   normal: {
     width: 300,
     padding: "30px",
@@ -81,6 +91,7 @@ const styles = StyleSheet.create({
   normalText: {
     textAlign: "center",
   },
+  smallText: {},
   buttonView: {},
   buttonText: {},
 });

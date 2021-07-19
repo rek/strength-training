@@ -27,12 +27,12 @@ export const Activity: React.FC<{
   };
 
   return (
-    <View style={containerStyles}>
-      <Buttons.Button
-        handleClick={proxyHandleClick}
-        handleLongPress={handleLongPress}
-        extraStyles={styles.textContainer}
-      >
+    <Buttons.Button
+      handleClick={proxyHandleClick}
+      handleLongPress={handleLongPress}
+      extraStyles={containerStyles}
+    >
+      <View style={styles.textContainer}>
         <Text>
           {capitalize(activity.userName)}
           <ActivityIcon name={activity.implementName} />
@@ -41,11 +41,11 @@ export const Activity: React.FC<{
         <Text style={styles.movementStyle}>
           {activity.movementName.toLocaleUpperCase()}
         </Text>
-      </Buttons.Button>
+      </View>
       <View style={styles.buttonContainer}>
         <Icons.Right />
       </View>
-    </View>
+    </Buttons.Button>
   );
 };
 

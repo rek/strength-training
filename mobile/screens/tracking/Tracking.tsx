@@ -1,7 +1,7 @@
 import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Text as DefaultText, View as DefaultView } from "react-native";
-import { Layouts, Loading, AddButtonSmall } from "../../components";
+import { Layouts, Loading, Buttons } from "../../components";
 
 import { ListScreen, EmptyScreen } from "./list";
 import { TrackingParamList } from "../../navigation/types";
@@ -27,8 +27,7 @@ export const TrackingScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <Layouts.TopMiddle
       renderTop={() => (
-        <AddButtonSmall
-          text="Add"
+        <Buttons.Add
           handleClick={() => navigation.navigate("CreateActivityScreen")}
         />
       )}

@@ -194,9 +194,11 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     >
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <View style={styles.errorBox}>
-            <Text style={styles.errorBanner}>{errorMessage}</Text>
-          </View>
+          {errorMessage && (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorBanner}>{errorMessage}</Text>
+            </View>
+          )}
           <Text style={titleStyle}>{title}</Text>
         </View>
         <View style={styles.mainContainer}>

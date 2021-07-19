@@ -1,29 +1,35 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 
 import { Alerts } from "../alerts";
 import { Icons } from "../icons";
 
-import { Button } from "./Button";
+import { Props } from "./Button";
+import { IconButton } from "./ButtonIcon";
 
-interface Props {
-  handleDelete: () => void;
-}
-export const Delete: React.FC<Props> = ({ handleDelete }) => {
-  const handleClick = () => {
-    Alerts.deleteAlert({ handleOk: handleDelete });
+export const Delete: React.FC<Props> = ({ text, handleClick, ...rest }) => {
+  const handleClickProxy = () => {
+    Alerts.deleteAlert({ handleOk: handleClick });
   };
 
   const handleLongPress = () => {
-    handleDelete();
+    handleClick();
   };
 
   return (
-    <Button
+    <IconButton
       id="delete"
-      handleClick={handleClick}
+      extraStyles={styles.small}
+      handleClick={handleClickProxy}
       handleLongPress={handleLongPress}
-    >
-      <Icons.Delete />
-    </Button>
+      renderIcon={() => <Icons.Delete size={36} />}
+      {...rest}
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  small: {
+    padding: 10,
+  },
+});

@@ -15,6 +15,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  // console.log("colorScheme", colorScheme);
 
   return (
     <BottomTab.Navigator

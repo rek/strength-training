@@ -1,17 +1,33 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 
 import { View } from "../Themed";
 
 interface Props {}
 export const Center: React.FC<Props> = ({ children }) => {
-  return <View style={styles.container}>{children}</View>;
+  return (
+    <View style={styles.container}>
+      <View style={styles.left} />
+      <View style={styles.center}>{children}</View>
+      <View style={styles.right} />
+    </View>
+  );
+};
+
+const container: ViewStyle = {
+  // alignItems: "center",
+  // justifyContent: "center",
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  container,
+  left: {
+    // flexGrow: 1,
+  } as ViewStyle,
+  center: {
+    // flexGrow: 5,
+  } as ViewStyle,
+  right: {
+    // flexGrow: 1,
+  } as ViewStyle,
 });

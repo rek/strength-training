@@ -29,6 +29,5 @@ export const ListScreen: React.FC<Props> = ({ activities, handleClick }) => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 100,
-    width: "60%",
   },
 });

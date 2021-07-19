@@ -36,17 +36,13 @@ export const AddButtonSmall: React.FC<Props> = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors[CurrentTheme].background,
     alignItems: "center",
     flexDirection: "row",
   },
-  icon: {
-    backgroundColor: Colors[CurrentTheme].background,
-  },
-  buttonText: {
-    backgroundColor: Colors[CurrentTheme].background,
-  },
+  icon: {},
+  buttonText: {},
   small: {
     width: 120,
+    padding: 10,
   },
 });

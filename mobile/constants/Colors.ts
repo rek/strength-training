@@ -1,5 +1,6 @@
-const black = "#000";
-const tintColorLight = "#eee";
+const dark = "#000";
+const light = "#fff";
+const tintColorLight = "#888";
 const tintColorDark = "#fff";
 
 const lighterGrey = "#eee";
@@ -27,28 +28,30 @@ export const CurrentTheme = "dark";
 export default {
   current: "dark",
   light: {
+    hasNet: green,
+    hasDevice: blue,
+    hasUnsaved: orange,
+
     icons: "black",
     error: red,
-    hasNet: green,
-    hasDevice: blue,
-    hasUnsaved: orange,
-    text: "#fff",
+    text: light,
     border: darkGrey,
-    background: black,
-    header: black,
+    background: dark,
+    header: light,
     tint: tintColorDark,
     tabIconDefault: lightGrey,
-    tabIconSelected: tintColorDark,
+    tabIconSelected: tintColorLight,
   },
   dark: {
-    icons: "white",
-    error: red,
     hasNet: green,
     hasDevice: blue,
     hasUnsaved: orange,
+
+    icons: "white",
+    error: red,
     text: lightGrey,
     background: darkGrey,
-    header: black,
+    header: dark,
     border: lightGrey,
     tint: darkGrey,
     tabIconDefault: lightGrey,

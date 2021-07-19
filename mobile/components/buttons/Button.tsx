@@ -37,16 +37,20 @@ export const Button: React.FC<Props> = ({
   };
 
   return (
-    <TouchableOpacity onPress={pressed} onLongPress={longPress}>
-      <View style={[styles.buttonView, extraStyles]}>
+    <TouchableOpacity
+      onPress={pressed}
+      onLongPress={longPress}
+      style={[styles.buttonView, extraStyles]}
+    >
+      {title && (
         <Text
           style={[styles.buttonText, extraTextStyles]}
           lightColor={false ? Colors.light.tint : Colors.dark.tint}
         >
           {title}
-          {children}
         </Text>
-      </View>
+      )}
+      {children}
     </TouchableOpacity>
   );
 };

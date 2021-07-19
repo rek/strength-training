@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 
 import { View } from "../Themed";
 
@@ -15,17 +15,21 @@ export const TopMiddle: React.FC<Props> = ({ renderTop, children }) => {
   );
 };
 
+const container: ViewStyle = {
+  flex: 1,
+};
+const topBar: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "flex-end",
+  justifyContent: "flex-end",
+};
+const middleContent: ViewStyle = {
+  alignItems: "center",
+  // justifyContent: "center",
+};
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  topBar: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-  },
-  middleContent: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  container,
+  topBar,
+  middleContent,
 });

@@ -20,27 +20,25 @@ export const StartAction: React.FC<Props> = ({
   return (
     <View>
       {currentState.matches("noDevice") && (
-        <Buttons.Button handleClick={handleDetectDevice}>
-          No device found. Check again?
-        </Buttons.Button>
+        <Buttons.Button
+          handleClick={handleDetectDevice}
+          title="No device found. Check again?"
+        />
       )}
       {currentState.matches("unCalibrated") && (
         <Text>Waiting for calibration.</Text>
       )}
       {currentState.matches("ready") && (
-        <Buttons.ButtonNormal handleClick={handleClick}>
-          Start
-        </Buttons.ButtonNormal>
+        <Buttons.ButtonNormal handleClick={handleClick} title="Start" />
       )}
       {currentState.matches("running") && (
-        <Buttons.ButtonNormal handleClick={handleClickStop}>
-          Stop
-        </Buttons.ButtonNormal>
+        <Buttons.ButtonNormal handleClick={handleClickStop} title="Stop" />
       )}
       {currentState.matches("hasRun") && (
-        <Buttons.Button handleClick={handleClickReset}>
-          Log recorded and added, click to reset.
-        </Buttons.Button>
+        <Buttons.Button
+          handleClick={handleClickReset}
+          title="Log recorded and added, click to reset."
+        />
       )}
     </View>
   );

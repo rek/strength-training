@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { LogsParamList } from "../types";
 // import { RightHeaderStatus } from "../RightHeaderStatus";
-import { LogsScreen, Settings } from "../../screens";
+import { ShowLogScreen, LogsScreen, Settings } from "../../screens";
 import { TabBarIcon } from "../TabBarIcon";
 
 const LogsStack = createStackNavigator<LogsParamList>();
@@ -19,6 +19,11 @@ export const LogsNavigator = () => {
       <LogsStack.Screen
         name="LogsScreen"
         component={LogsScreen}
+        options={{ headerTitle: "Logs" }}
+      />
+      <LogsStack.Screen
+        name="ShowLogScreen"
+        component={ShowLogScreen}
         options={{ headerTitle: "Logs" }}
       />
     </LogsStack.Navigator>

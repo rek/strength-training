@@ -10,4 +10,11 @@ export const borders = StyleSheet.create({
 
     padding: 10,
   },
+  round: {
+    borderWidth: 1,
+    borderRadius: 70,
+    borderColor: Colors[CurrentTheme].border,
+
+    padding: 10,
+  },
 });

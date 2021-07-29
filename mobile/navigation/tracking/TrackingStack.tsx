@@ -9,8 +9,11 @@ import {
 import { TrackingParamList } from "../types";
 import { RightHeaderStatus } from "../RightHeaderStatus";
 
-import { TrackingScreen, CreateActivityScreen } from "../../screens/tracking";
-import { StartActivityScreen } from "../../screens/tracking/list/Start";
+import {
+  StartActivityScreen,
+  TrackingScreen,
+  CreateActivityScreen,
+} from "../../screens/tracking";
 import { TabBarIcon } from "../TabBarIcon";
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -33,7 +36,6 @@ export const TrackingNavigator: React.FC<Props> = ({ navigation }) => {
         name="StartActivityScreen"
         component={StartActivityScreen}
         options={{
-          headerTitle: "Start",
           headerLeft: () => <HeaderBackButton onPress={handleBack} />,
           headerRight: RightHeaderStatus,
         }}

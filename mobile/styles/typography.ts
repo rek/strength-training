@@ -13,4 +13,7 @@ export const typography = StyleSheet.create({
   large: {
     fontSize: 24,
   },
+  xlarge: {
+    fontSize: 64,
+  },
 });

@@ -1,7 +1,10 @@
 import { useQueryClient, useQuery, useMutation } from "react-query";
 
 import { FirebaseClient } from "../../../database/useFirebase";
-import { Activity, convertToRaw, fetchActivities } from "..";
+
+import { Activity } from "../types";
+import { convertToRaw } from "../normalize";
+import { fetchActivities } from "../service";
 
 const key = "activities";
 

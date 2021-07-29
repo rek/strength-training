@@ -33,9 +33,9 @@ import {
   useDeleteActivity,
 } from "../../../models/activities/queries";
 import { showToast } from "../../../components/Toast";
-import { ActivityChart } from "./ActivityChart";
+import { ActivityChart } from "../list/ActivityChart";
 import { getRepsFromLog } from "../../../models/log/getRepsFromLog";
-import { ActivityStats } from "./ActivityStats";
+import { ActivityStats } from "../list/ActivityStats";
 
 type Props = StackScreenProps<TrackingParamList, "StartActivityScreen">;
 export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
@@ -188,6 +188,8 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
 
   const lastLog = last(localData);
 
+  // navigation.setOptions({ title: `${title} ${currentActivity.weightName}` });
+
   return (
     <Layouts.TopMiddle
       renderTop={() => <Buttons.Delete handleClick={handleDelete} />}
@@ -199,11 +201,10 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
               <Text style={styles.errorBanner}>{errorMessage}</Text>
             </View>
           )}
-          <Text style={titleStyle}>{title}</Text>
         </View>
-        <View style={styles.mainContainer}>
+        {/* <View style={styles.mainContainer}>
           {chartData && <ActivityChart data={chartData} />}
-        </View>
+        </View> */}
         <View style={styles.footerContainer}>
           <StartAction
             currentState={currentState}
@@ -232,9 +233,6 @@ const styles = StyleSheet.create({
   errorBanner: {
     color: Colors[CurrentTheme].error,
   },
-  title: {
-    borderBottomWidth: 1,
-  },
   errorBox,
   titleContainer: {
     flex: 1,
@@ -256,4 +254,3 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 });
-const titleStyle = StyleSheet.flatten([typography.large, styles.title]);

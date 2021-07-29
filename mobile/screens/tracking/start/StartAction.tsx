@@ -2,6 +2,11 @@ import React from "react";
 import { State } from "xstate";
 
 import { Buttons, Text, View } from "../../../components";
+import { ScrollContainer } from "../../../components/ScrollContainer";
+import { Stage1 } from "./Stage1";
+import { Stage1Complete } from "./Stage1Complete";
+import { Stage2Complete } from "./Stage2Complete";
+import { Stage2 } from "./Stage2";
 
 interface Props {
   currentState: State<any>;
@@ -20,16 +25,24 @@ export const StartAction: React.FC<Props> = ({
   return (
     <View>
       {currentState.matches("noDevice") && (
-        <Buttons.Button
-          handleClick={handleDetectDevice}
-          text="No device found. Please connect to device WIFI, and then click here to trigger a re-check."
-        />
+        <>
+          <Stage1 handleDetectDevice={handleDetectDevice} />
+          {/* <Stage1Complete /> */}
+          {/* <Stage2 /> */}
+        </>
       )}
       {currentState.matches("unCalibrated") && (
-        <Text>Waiting for calibration. Please rotate device.</Text>
+        <>
+          <Stage1Complete />
+          <Stage2 />
+        </>
       )}
       {currentState.matches("ready") && (
-        <Buttons.ButtonNormal handleClick={handleClick} text="Start" />
+        <>
+          <Stage1Complete />
+          <Stage2Complete />
+          <Buttons.ButtonNormal handleClick={handleClick} text="Track now" />
+        </>
       )}
       {currentState.matches("running") && (
         <Buttons.ButtonNormal handleClick={handleClickStop} text="Stop" />

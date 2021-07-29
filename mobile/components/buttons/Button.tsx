@@ -82,11 +82,11 @@ const styles = StyleSheet.create({
   },
   normal: {
     width: 300,
-    padding: "30px",
+    padding: 30,
     borderWidth: 1,
     borderColor: Colors[CurrentTheme].border,
     borderRadius: 48,
-    margin: "10px",
+    margin: 10,
   },
   normalText: {
     textAlign: "center",

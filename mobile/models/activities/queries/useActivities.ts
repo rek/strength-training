@@ -3,6 +3,8 @@ import { useQueryClient, useQuery, useMutation } from "react-query";
 import { FirebaseClient } from "../../../database/useFirebase";
 import { Activity, convertToRaw, fetchActivities } from "..";
 
+const key = "activities";
+
 export const activityKeys = {
   all: ["activity"] as const,
   lists: () => [...activityKeys.all, "list"] as const,
@@ -45,7 +47,7 @@ export const createActivity = (idToken: string) => {
     async (value: Activity) => {
       const newActivity = await FirebaseClient.writeData({
         idToken,
-        key: "activities",
+        key,
         value: convertToRaw(value),
       });
 

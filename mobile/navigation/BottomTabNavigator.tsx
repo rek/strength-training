@@ -1,15 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import { BottomTabParamList, UsersParamList } from "./types";
+import { BottomTabParamList } from "./types";
 
-import { UsersScreen } from "../screens";
 import { TrackingIcon, TrackingNavigator } from "./tracking/TrackingStack";
 import { LogsIcon, LogsNavigator } from "./logs/LogsStack";
-import { TabBarIcon } from "./TabBarIcon";
+import { UsersIcon } from "./users/icon";
+import { UsersNavigator } from "./users/UsersStack";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -51,9 +50,9 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Users"
-        component={TabTwoNavigator}
+        component={UsersNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="people" color={color} />,
+          tabBarIcon: UsersIcon,
         }}
       />
       <BottomTab.Screen
@@ -64,19 +63,5 @@ export default function BottomTabNavigator() {
         }}
       />
     </BottomTab.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<UsersParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="UsersScreen"
-        component={UsersScreen}
-        options={{ headerTitle: "Users" }}
-      />
-    </TabTwoStack.Navigator>
   );
 }

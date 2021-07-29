@@ -17,6 +17,8 @@ export type TrackingParamList = {
 
 export type UsersParamList = {
   UsersScreen: undefined;
+  CreateUserScreen: undefined;
+  ShowUserScreen: { id: string };
 };
 
 export type LogsParamList = {

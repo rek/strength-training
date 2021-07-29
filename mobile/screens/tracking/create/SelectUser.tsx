@@ -2,7 +2,7 @@ import React from "react";
 import { Picker } from "@react-native-picker/picker";
 
 import { Text } from "../../../components/Themed";
-import { useCurrentUserState, useUsers } from "../../../hooks/useUsers";
+import { useCurrentUserState, useUsers } from "../../../models/user";
 
 import { styles } from "../../elements";
 

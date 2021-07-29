@@ -1,17 +1,12 @@
+import lodash from "lodash";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { atom, useRecoilState } from "recoil";
 
-export interface User {
-  id: string;
-  display: string;
-  weight: number;
-}
+import { FirebaseClient } from "../../../database/useFirebase";
+import { convertToRaw } from "../normalize";
+import { RawUser, User } from "../types";
 
-// export const allUsers: User[] = [
-//   { id: "adam", display: "adam", weight: 95 },
-//   { id: "anette", display: "anette", weight: 67 },
-//   { id: "crystal", display: "crystal", weight: 61 },
-//   { id: "sam", display: "sam", weight: 80 },
-// ];
+const key = "users";
 
 const currentUserState = atom<User["id"] | undefined>({
   key: "currentUserState", // unique ID (with respect to other atoms/selectors)
@@ -26,43 +21,23 @@ const currentUserState = atom<User["id"] | undefined>({
 
 export const useCurrentUserState = () => useRecoilState(currentUserState);
 
-import lodash from "lodash";
-import { useQuery } from "react-query";
-
-import { FirebaseClient } from "../database/useFirebase";
-
-const QUERY_KEY = "users";
-
-export interface Users {
-  id: string;
-  name: string;
-  weight: string;
-}
-interface RawUsers {
-  name?: string;
-  fields?: {
-    name?: {
-      stringValue: string;
-    };
-    weight?: {
-      integerValue: string;
-    };
-  };
-}
+export const userKeys = {
+  all: ["user"] as const,
+};
 
 export const useUsers = ({ idToken }: { idToken?: string }) => {
-  return useQuery<Users[]>(
-    QUERY_KEY,
+  return useQuery<User[]>(
+    userKeys.all,
     async () => {
       if (!idToken) {
         return [];
       }
       const items = await FirebaseClient.getData({
         idToken,
-        key: "users",
+        key,
       });
 
-      const processed: Users[] = items.map((item: RawUsers) => {
+      const processed: User[] = items.map((item: RawUser) => {
         // name is id
         const id = item.name ? lodash.last(item.name?.split("/")) : "unknown";
 
@@ -79,4 +54,28 @@ export const useUsers = ({ idToken }: { idToken?: string }) => {
       staleTime: Infinity,
     }
   );
+};
+
+export const createUser = (idToken: string) => {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(
+    async (value: User) => {
+      const newUser = await FirebaseClient.writeData({
+        idToken,
+        key,
+        value: convertToRaw(value),
+      });
+
+      // console.log("newUser", newUser);
+      return newUser;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(userKeys.all);
+      },
+    }
+  );
+
+  return mutate;
 };

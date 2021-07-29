@@ -16,7 +16,9 @@ export default {
           },
           Users: {
             screens: {
-              UsersScreen: "Users",
+              UsersScreen: "UsersScreen",
+              ShowUserScreen: "ShowUserScreen",
+              CreateUserScreen: "CreateUserScreen",
             },
           },
           Logs: {

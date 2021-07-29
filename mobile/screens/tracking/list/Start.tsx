@@ -108,7 +108,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     return (
       <ErrorDisplay error="Error fetching data">
         <Buttons.Button
-          title="Click here to go home"
+          text="Click here to go home"
           handleClick={handleGoHome}
         ></Buttons.Button>
       </ErrorDisplay>
@@ -190,7 +190,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <Layouts.TopMiddle
-      renderTop={() => <Buttons.Delete handleDelete={handleDelete} />}
+      renderTop={() => <Buttons.Delete handleClick={handleDelete} />}
     >
       <View style={styles.container}>
         <View style={styles.titleContainer}>

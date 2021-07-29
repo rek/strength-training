@@ -1,7 +1,7 @@
 import { atom, useRecoilState } from "recoil";
 
 import { Rep } from "../models/log/types";
-import { User } from "./useUsers";
+import { User } from "../models/user";
 export interface LocalData {
   user: User["id"];
   weight: string;

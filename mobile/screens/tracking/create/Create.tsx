@@ -9,7 +9,7 @@ import { useSelectedWeight, SelectWeight } from "./SelectWeight";
 import { useSelectedExercise, SelectExercise } from "./SelectExercise";
 import { SelectUser } from "./SelectUser";
 import { SelectImplement, useSelectedImplement } from "./SelectImplement";
-import { useCurrentUserState } from "../../../hooks/useUsers";
+import { useCurrentUserState } from "../../../models/user";
 import { useFirebase } from "../../../database/useFirebase";
 import { TrackingParamList } from "../../../navigation/types";
 import { createActivity } from "../../../models/activities/queries";

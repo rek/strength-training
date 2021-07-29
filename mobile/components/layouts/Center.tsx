@@ -15,19 +15,19 @@ export const Center: React.FC<Props> = ({ children }) => {
 };
 
 const container: ViewStyle = {
-  // alignItems: "center",
-  // justifyContent: "center",
+  flex: 1,
+  flexDirection: "row",
 };
 
 const styles = StyleSheet.create({
   container,
   left: {
-    // flexGrow: 1,
+    flexGrow: 1,
   } as ViewStyle,
   center: {
-    // flexGrow: 5,
+    flexGrow: 2,
   } as ViewStyle,
   right: {
-    // flexGrow: 1,
+    flexGrow: 1,
   } as ViewStyle,
 });

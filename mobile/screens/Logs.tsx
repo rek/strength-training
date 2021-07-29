@@ -1,9 +1,9 @@
 import * as React from "react";
 import daysjs from "dayjs";
 import { StyleSheet } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
+import { HeaderTitle, StackScreenProps } from "@react-navigation/stack";
 
-import { RefreshView, Buttons, View, Text } from "../components";
+import { RefreshView, Buttons, View, Text, Layouts } from "../components";
 import { useLocalData } from "../hooks/useLocalData";
 import { LogsParamList } from "../navigation/types";
 
@@ -23,11 +23,10 @@ export const LogsScreen: React.FC<Props> = ({ navigation }) => {
   }, [data]);
 
   return (
-    <RefreshView refreshAction={refreshAction}>
+    // <RefreshView refreshAction={refreshAction}>
+    <Layouts.Center>
       <View style={styles.container}>
-        <View style={styles.title}>
-          {data.length === 0 && <Text>No results to show</Text>}
-        </View>
+        {data.length === 0 && <HeaderTitle>No results to show</HeaderTitle>}
         <View style={styles.list}>
           {data.map((item, index) => {
             return (
@@ -37,33 +36,29 @@ export const LogsScreen: React.FC<Props> = ({ navigation }) => {
             );
           })}
         </View>
-        <Buttons.Button
-          title="Go to Settings"
+        <Buttons.ButtonNormal
+          text="Go to Settings"
           handleClick={() => navigation.navigate("SettingsScreen")}
         />
       </View>
-    </RefreshView>
+    </Layouts.Center>
+    // </RefreshView>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   container: {
-    width: "100%",
-  },
-  list: {
-    flex: 1,
+    padding: 20,
     alignItems: "flex-start",
     justifyContent: "flex-start",
   },
+  list: {
+    // flex: 1,
+  },
   separator: {
-    marginBottom: 20,
-    marginTop: 10,
-    height: 1,
-    width: "80%",
+    // marginBottom: 20,
+    // marginTop: 10,
+    // height: 1,
+    // width: "80%",
   },
 });

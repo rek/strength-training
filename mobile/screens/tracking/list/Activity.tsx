@@ -8,6 +8,7 @@ import { borders } from "../../../styles/borders";
 import { ActivityIcon } from "./ActivityIcon";
 import { Alerts } from "../../../components/alerts";
 import { ActivityHydrayed } from "../../../models/activities";
+import { CardStyles } from "../../../styles/card";
 
 export const Activity: React.FC<{
   activity: ActivityHydrayed;
@@ -30,9 +31,9 @@ export const Activity: React.FC<{
     <Buttons.Button
       handleClick={proxyHandleClick}
       handleLongPress={handleLongPress}
-      extraStyles={containerStyles}
+      extraStyles={CardStyles.container}
     >
-      <View style={styles.textContainer}>
+      <View style={CardStyles.textContainer}>
         <Text>
           {capitalize(activity.userName)}
           <ActivityIcon name={activity.implementName} />
@@ -49,22 +50,9 @@ export const Activity: React.FC<{
   );
 };
 
-const textContainer: ViewStyle = {
-  flexGrow: 1,
-};
-const row: ViewStyle = {
-  flexDirection: "row",
-  marginBottom: 10,
-  paddingTop: 1,
-  paddingBottom: 1,
-};
 const styles = StyleSheet.create({
-  row,
-  textContainer,
   buttonContainer: {},
   movementStyle: {
     fontSize: SIZES.large,
   },
 });
-
-const containerStyles = StyleSheet.flatten([styles.row, borders.normal]);

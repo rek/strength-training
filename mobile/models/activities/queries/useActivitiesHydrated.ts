@@ -1,7 +1,7 @@
 import { useImplements } from "../../../hooks/useImplements";
 import { useWeights } from "../../../hooks/useWeight";
 import { useMovements } from "../../../hooks/useMovement";
-import { useUsers } from "../../../hooks/useUsers";
+import { useUsers } from "../../user/queries/useUsers";
 
 import { Activities } from "..";
 import { useActivities, useActivity } from "./useActivities";

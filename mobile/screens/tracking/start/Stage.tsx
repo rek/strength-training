@@ -14,8 +14,10 @@ export const Stage: React.FC<Props> = ({ stage, children, renderIcon }) => {
       <View style={styles.numberContainer}>
         <Text style={numberStyle}>{stage}</Text>
       </View>
-      {renderIcon && <View style={styles.icon}>{renderIcon()}</View>}
-      <View style={styles.content}>{children}</View>
+      <View style={styles.content}>
+        {renderIcon && <View style={styles.icon}>{renderIcon()}</View>}
+        {children}
+      </View>
     </View>
   );
 };
@@ -25,7 +27,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   numberContainer: {
-    // height: 100,
     alignItems: "flex-start",
   },
   stageNumber: {
@@ -33,11 +34,10 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
   },
   icon: {
+    minHeight: 250,
     alignItems: "center",
-    // height: 100,
   },
   content: {
-    // height: 100,
     alignItems: "center",
   },
 });

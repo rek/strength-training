@@ -4,24 +4,27 @@ import { StyleSheet } from "react-native";
 import { Buttons, Icons, View, Text } from "../../../components";
 import { borders } from "../../../styles/borders";
 import { typography } from "../../../styles/typography";
-import { Stage } from "./Stage";
 
 interface Props {
   handleClick: () => void;
 }
-export const Stage2Complete: React.FC<Props> = ({ handleClick }) => {
+export const Stage3Complete: React.FC<Props> = ({ handleClick }) => {
   return (
-    <Stage stage={2} renderIcon={() => <Icons.Wifi size={256} />}>
+    <View>
       <View>
-        <Text style={typography.xlarge}>Calibrated</Text>
+        <Text style={typography.xlarge}>Activity Tracked</Text>
       </View>
       <View style={styles.tickContainer}>
         <Text style={tickStyle}>
           <Icons.Tick size={100} />
         </Text>
       </View>
-      <Buttons.ButtonNormal handleClick={handleClick} text="Track now" />;
-    </Stage>
+      <Buttons.ButtonNormal handleClick={handleClick} text="View" />;
+      <View>
+        <Text style={typography.xlarge}>New activity:</Text>
+        <Buttons.ButtonNormal handleClick={handleClick} text="Track activity" />
+      </View>
+    </View>
   );
 };
 

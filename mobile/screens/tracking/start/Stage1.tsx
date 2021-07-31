@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import { Buttons, Icons, Text } from "../../../components";
+import { Buttons, Icons, Text, View } from "../../../components";
 import { typography } from "../../../styles/typography";
 
 import { Stage } from "./Stage";

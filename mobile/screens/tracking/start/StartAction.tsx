@@ -1,12 +1,14 @@
 import React from "react";
 import { State } from "xstate";
 
-import { Buttons, Text, View } from "../../../components";
+import { View } from "../../../components";
 import { ScrollContainer } from "../../../components/ScrollContainer";
 import { Stage1 } from "./Stage1";
 import { Stage1Complete } from "./Stage1Complete";
 import { Stage2Complete } from "./Stage2Complete";
 import { Stage2 } from "./Stage2";
+import { Stage3Complete } from "./Stage3Complete";
+import { Stage3 } from "./Stage3";
 
 interface Props {
   currentState: State<any>;
@@ -25,11 +27,9 @@ export const StartAction: React.FC<Props> = ({
   return (
     <View>
       {currentState.matches("noDevice") && (
-        <>
+        <View>
           <Stage1 handleDetectDevice={handleDetectDevice} />
-          {/* <Stage1Complete /> */}
-          {/* <Stage2 /> */}
-        </>
+        </View>
       )}
       {currentState.matches("unCalibrated") && (
         <>
@@ -40,18 +40,14 @@ export const StartAction: React.FC<Props> = ({
       {currentState.matches("ready") && (
         <>
           <Stage1Complete />
-          <Stage2Complete />
-          <Buttons.ButtonNormal handleClick={handleClick} text="Track now" />
+          <Stage2Complete handleClick={handleClick} />
         </>
       )}
       {currentState.matches("running") && (
-        <Buttons.ButtonNormal handleClick={handleClickStop} text="Stop" />
+        <Stage3 handleClick={handleClickStop} />
       )}
       {currentState.matches("hasRun") && (
-        <Buttons.Button
-          handleClick={handleClickReset}
-          text="Log recorded and added, click to reset."
-        />
+        <Stage3Complete handleClick={handleClickReset} />
       )}
     </View>
   );

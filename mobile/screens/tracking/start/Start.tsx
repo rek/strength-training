@@ -96,6 +96,21 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
     id: route.params.id,
   });
 
+  React.useEffect(() => {
+    // navigation.setOptions({ title: `${title} ${currentActivity.weightName}` });
+    if (data && data.length === 1) {
+      const currentActivity = data[0];
+      const title = currentActivity.movementName.toLocaleUpperCase();
+      navigation.setOptions({
+        title: `${title} ${currentActivity.weightName}`,
+      });
+    } else {
+      navigation.setOptions({
+        title: "Loading...",
+      });
+    }
+  }, [data]);
+
   const handleGoHome = () => {
     navigation.navigate("TrackingScreen");
   };
@@ -120,8 +135,6 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   console.log("localData", localData);
   console.log("networkStatus", networkStatus);
   console.log("currentState", currentState.value);
-
-  const title = currentActivity.movementName.toLocaleUpperCase();
 
   // get from state
   const selectedExercise = currentActivity.movement;
@@ -187,8 +200,6 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
   };
 
   const lastLog = last(localData);
-
-  // navigation.setOptions({ title: `${title} ${currentActivity.weightName}` });
 
   return (
     <Layouts.TopMiddle

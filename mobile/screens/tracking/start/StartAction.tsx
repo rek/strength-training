@@ -1,5 +1,6 @@
 import React from "react";
 import { State } from "xstate";
+import { Dimensions } from "react-native";
 
 import { View } from "../../../components";
 import { ScrollContainer } from "../../../components/ScrollContainer";
@@ -24,31 +25,36 @@ export const StartAction: React.FC<Props> = ({
   handleClick,
   handleClickStop,
 }) => {
+  const screenHeight = Dimensions.get("window").height;
+  console.log("screenHeight", screenHeight);
+
   return (
-    <View>
-      {currentState.matches("noDevice") && (
-        <View>
-          <Stage1 handleDetectDevice={handleDetectDevice} />
-        </View>
-      )}
-      {currentState.matches("unCalibrated") && (
-        <>
-          <Stage1Complete />
-          <Stage2 />
-        </>
-      )}
-      {currentState.matches("ready") && (
-        <>
-          <Stage1Complete />
-          <Stage2Complete handleClick={handleClick} />
-        </>
-      )}
-      {currentState.matches("running") && (
-        <Stage3 handleClick={handleClickStop} />
-      )}
-      {currentState.matches("hasRun") && (
-        <Stage3Complete handleClick={handleClickReset} />
-      )}
-    </View>
+    <>
+      <View style={[{ height: screenHeight }]}>
+        {currentState.matches("noDevice") && (
+          <>
+            <Stage1 handleDetectDevice={handleDetectDevice} />
+          </>
+        )}
+        {currentState.matches("unCalibrated") && (
+          <>
+            <Stage1Complete />
+            <Stage2 />
+          </>
+        )}
+        {currentState.matches("ready") && (
+          <>
+            <Stage1Complete />
+            <Stage2Complete handleClick={handleClick} />
+          </>
+        )}
+        {currentState.matches("running") && (
+          <Stage3 handleClick={handleClickStop} />
+        )}
+        {currentState.matches("hasRun") && (
+          <Stage3Complete handleClick={handleClickReset} />
+        )}
+      </View>
+    </>
   );
 };

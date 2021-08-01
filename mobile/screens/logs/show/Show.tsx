@@ -5,7 +5,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { LogsParamList } from "../../../navigation/types";
 import { Buttons, Layouts, View, Text, Loading } from "../../../components";
 import { useFirebase } from "../../../database/useFirebase";
-import Colors, { CurrentTheme } from "../../../constants/Colors";
+import Colors, { currentThemeMode } from "../../../constants/Colors";
 import { ActivityChart } from "../../tracking/list/ActivityChart";
 
 type Props = StackScreenProps<LogsParamList, "ShowLogScreen">;
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flex: 4,
     width: "100%",
     minHeight: 200,
-    backgroundColor: Colors[CurrentTheme].background,
+    backgroundColor: Colors[currentThemeMode].colors.background,
     marginBottom: 10,
   },
 });

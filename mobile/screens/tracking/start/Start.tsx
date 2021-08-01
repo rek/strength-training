@@ -14,7 +14,7 @@ import {
   ChartData,
   Loading,
 } from "../../../components";
-import Colors, { CurrentTheme } from "../../../constants/Colors";
+import Colors, { currentThemeMode } from "../../../constants/Colors";
 import { useLocalData } from "../../../hooks/useLocalData";
 import {
   NetworkState,
@@ -234,7 +234,7 @@ export const StartActivityScreen: React.FC<Props> = ({ route, navigation }) => {
 };
 
 const errorBox: ViewStyle = {
-  backgroundColor: Colors[CurrentTheme].background,
+  // backgroundColor: Colors[currentThemeMode].colors.background,
   borderWidth: 2,
   padding: 20,
   borderColor: "#fe5523",
@@ -242,7 +242,7 @@ const errorBox: ViewStyle = {
 
 const styles = StyleSheet.create({
   errorBanner: {
-    color: Colors[CurrentTheme].error,
+    color: Colors[currentThemeMode].error,
   },
   errorBox,
   titleContainer: {
@@ -255,12 +255,12 @@ const styles = StyleSheet.create({
     flex: 4,
     width: "100%",
     minHeight: 200,
-    backgroundColor: Colors[CurrentTheme].background,
+    // backgroundColor: Colors[currentThemeMode].colors.background,
     marginBottom: 10,
   },
   container: {
     flex: 1,
-    backgroundColor: Colors[CurrentTheme].background,
+    // backgroundColor: Colors[currentThemeMode].colors.background,
     alignItems: "center",
     justifyContent: "flex-start",
   },

@@ -1,12 +1,10 @@
 import * as React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-import Colors, { CurrentTheme } from "../../constants/Colors";
+import { useTheme } from "../../hooks";
 
-export const Right = () => (
-  <Ionicons
-    name="chevron-forward"
-    size={36}
-    color={Colors[CurrentTheme].icons}
-  />
-);
+export const Right = () => {
+  const theme = useTheme();
+
+  return <Ionicons name="chevron-forward" size={36} color={theme.icons} />;
+};

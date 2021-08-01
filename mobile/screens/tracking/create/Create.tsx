@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { View, Buttons, Loading } from "../../../components";
-import Colors, { CurrentTheme } from "../../../constants/Colors";
+import Colors, { currentThemeMode } from "../../../constants/Colors";
 
 import { useSelectedWeight, SelectWeight } from "./SelectWeight";
 import { useSelectedExercise, SelectExercise } from "./SelectExercise";
@@ -82,7 +82,7 @@ const makePageStyle = (customStyle: StyleProp<ViewStyle>) => [
 
 const styles = StyleSheet.create({
   pageStyle: {
-    backgroundColor: Colors[CurrentTheme].background,
+    backgroundColor: Colors[currentThemeMode].colors.background,
   },
   mainBox: {
     width: "80%",

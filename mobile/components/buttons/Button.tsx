@@ -7,7 +7,7 @@ import {
   StyleProp,
 } from "react-native";
 
-import Colors, { CurrentTheme } from "../../constants/Colors";
+import Colors, { currentThemeMode } from "../../constants/Colors";
 
 import { Text, View } from "../Themed";
 
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 30,
     borderWidth: 1,
-    borderColor: Colors[CurrentTheme].border,
+    borderColor: Colors[currentThemeMode].colors.border,
     borderRadius: 48,
     margin: 10,
   },

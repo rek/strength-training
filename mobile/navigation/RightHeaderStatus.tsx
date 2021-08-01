@@ -2,48 +2,60 @@ import * as React from "react";
 import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 
 import { Text, View } from "../components/Themed";
-import Colors, { CurrentTheme } from "../constants/Colors";
-import { useLocalData } from "../hooks/useLocalData";
-import { NetworkState, useNetworkStatus } from "../hooks/useNetworkStatus";
-
-enum UnsavedState {
-  "hasUnsaved" = "hasUnsaved",
-  "hasNothing" = "hasNothing",
-}
+import { useTheme } from "../hooks";
+import { LocalDataStatus, useLocalData } from "../hooks/useLocalData";
+import { useNetworkStatus } from "../hooks/useNetworkStatus";
 
 export const RightHeaderStatus: React.FC<{
   tintColor?: string;
 }> = () => {
-  const [unsavedStatus, setUnsavedStatus] = React.useState<UnsavedState>(
-    UnsavedState.hasNothing
+  const [unsavedStatus, setUnsavedStatus] = React.useState<LocalDataStatus>(
+    LocalDataStatus.hasNothing
   );
   const [localData] = useLocalData();
   const [networkStatus] = useNetworkStatus();
+  const theme = useTheme();
 
   React.useEffect(() => {
-    console.log("localData", localData);
     if (localData.length > 0) {
-      setUnsavedStatus(UnsavedState.hasUnsaved);
+      setUnsavedStatus(LocalDataStatus.hasUnsaved);
     } else {
-      setUnsavedStatus(UnsavedState.hasNothing);
+      setUnsavedStatus(LocalDataStatus.hasNothing);
     }
   }, [localData]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.dataContainer}>
-        <Text style={styles[unsavedStatus]} />
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.card,
+        },
+      ]}
+    >
+      <View
+        style={[styles.dataContainer, { backgroundColor: theme.colors.card }]}
+      >
+        <Text
+          style={[
+            styles.indicator,
+            {
+              backgroundColor: theme[unsavedStatus],
+            },
+          ]}
+        />
       </View>
-      <Text style={styles[networkStatus]} />
+      <Text
+        style={[
+          styles.indicator,
+          {
+            backgroundColor: theme[networkStatus],
+          },
+        ]}
+      />
     </View>
   );
 };
-
-console.log(
-  "Colors[CurrentTheme].header--",
-  CurrentTheme,
-  Colors[CurrentTheme].header
-);
 
 const size = 12;
 const styles = StyleSheet.create({
@@ -53,28 +65,8 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 16,
     flexDirection: "row",
-    backgroundColor: Colors[CurrentTheme].header,
   } as ViewStyle,
-  [UnsavedState.hasUnsaved]: {
-    backgroundColor: Colors[CurrentTheme].hasUnsaved,
-    width: size,
-    height: size,
-    borderRadius: size / 2,
-  } as TextStyle,
-  [NetworkState.hasInternet]: {
-    backgroundColor: Colors[CurrentTheme].hasNet,
-    width: size,
-    height: size,
-    borderRadius: size / 2,
-  } as TextStyle,
-  [NetworkState.hasDevice]: {
-    backgroundColor: Colors[CurrentTheme].hasDevice,
-    width: size,
-    height: size,
-    borderRadius: size / 2,
-  } as TextStyle,
-  [UnsavedState.hasNothing]: {
-    backgroundColor: Colors[CurrentTheme].text,
+  indicator: {
     width: size,
     height: size,
     borderRadius: size / 2,

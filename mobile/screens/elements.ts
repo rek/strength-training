@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import Colors, { CurrentTheme, SIZES } from "../constants/Colors";
+import Colors, { currentThemeMode, SIZES } from "../constants/Colors";
 
 export const styles = StyleSheet.create({
   picker: {
     color: "white",
-    backgroundColor: Colors[CurrentTheme].background,
+    backgroundColor: Colors[currentThemeMode].colors.background,
     borderRadius: 4,
     padding: 20,
   },
@@ -14,6 +14,6 @@ export const styles = StyleSheet.create({
   },
   pickerItem: {
     fontSize: SIZES.large,
-    color: Colors[CurrentTheme].hasNet,
+    color: Colors[currentThemeMode].hasInternet,
   },
 });

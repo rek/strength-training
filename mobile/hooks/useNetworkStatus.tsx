@@ -15,6 +15,7 @@ export const useNetworkStatus = () => {
   const processState = (state: NetInfoState) => {
     if (state.isConnected) {
       console.log("Connection state", state);
+
       if ("ipAddress" in state.details) {
         if (state.details.ipAddress === "192.168.1.1") {
           setStatus(NetworkState.hasDevice);

@@ -4,9 +4,9 @@ import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AppearanceProvider } from "react-native-appearance";
 
-import { CachedResources } from "./hooks/useCachedResources";
-import useColorScheme from "./hooks/useColorScheme";
+// import { CachedResources } from "./hooks/useCachedResources";
 import Navigation from "./navigation";
 
 import { AuthProvider } from "./database/AuthProvider";
@@ -18,19 +18,19 @@ if (LogBox) {
 }
 
 export default function App() {
-  const colorScheme = useColorScheme();
-
   return (
     // <CachedResources>
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <SafeAreaProvider>
-          <AuthProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </AuthProvider>
-        </SafeAreaProvider>
-      </RecoilRoot>
+      <AppearanceProvider>
+        <RecoilRoot>
+          <SafeAreaProvider>
+            <AuthProvider>
+              <Navigation />
+              <StatusBar style="auto" />
+            </AuthProvider>
+          </SafeAreaProvider>
+        </RecoilRoot>
+      </AppearanceProvider>
     </QueryClientProvider>
     // </CachedResources>
   );

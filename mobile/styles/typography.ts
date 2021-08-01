@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import Colors, { CurrentTheme } from "../constants/Colors";
+import Colors, { currentThemeMode } from "../constants/Colors";
 
 export const typography = StyleSheet.create({
   family: {

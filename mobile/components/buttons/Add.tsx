@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 
-import Colors, { CurrentTheme } from "../../constants/Colors";
+import Colors, { currentThemeMode } from "../../constants/Colors";
 
 import { Icons } from "../icons";
 

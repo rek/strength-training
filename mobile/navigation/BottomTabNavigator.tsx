@@ -1,27 +1,25 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
 import { BottomTabParamList } from "./types";
 
 import { TrackingIcon, TrackingNavigator } from "./tracking/TrackingStack";
 import { LogsIcon, LogsNavigator } from "./logs/LogsStack";
 import { UsersIcon } from "./users/icon";
 import { UsersNavigator } from "./users/UsersStack";
+import { useTheme } from "../hooks";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-  // console.log("colorScheme", colorScheme);
+  const theme = useTheme();
 
   return (
     <BottomTab.Navigator
       initialRouteName="Tracking"
       tabBarOptions={{
-        activeTintColor: Colors[colorScheme].tabIconSelected,
-        inactiveTintColor: Colors[colorScheme].tabIconDefault,
+        activeTintColor: theme.tabIconSelected,
+        inactiveTintColor: theme.tabIconDefault,
         // inactiveBackgroundColor: "#444",
 
         // both light:
@@ -29,8 +27,8 @@ export default function BottomTabNavigator() {
         // inactiveBackgroundColor: "#fff",
 
         // both dark:
-        // activeBackgroundColor: Colors[colorScheme].background,
-        // inactiveBackgroundColor: Colors[colorScheme].background,
+        // activeBackgroundColor: theme.background,
+        // inactiveBackgroundColor: theme.background,
 
         style: {
           borderTopWidth: 0,

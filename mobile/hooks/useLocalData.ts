@@ -2,6 +2,11 @@ import { atom, useRecoilState } from "recoil";
 
 import { Rep } from "../models/log/types";
 import { User } from "../models/user";
+
+export enum LocalDataStatus {
+  "hasUnsaved" = "hasUnsaved",
+  "hasNothing" = "hasNothing",
+}
 export interface LocalData {
   user: User["id"];
   weight: string;
